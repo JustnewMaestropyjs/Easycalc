@@ -6148,15 +6148,61 @@ if('serviceWorker' in navigator && location.protocol !== 'file:') {
       } catch(e){}
     });
   });
-  function renderRecent(){
-    let strip=document.getElementById('recentStrip');
-    if(!strip) return;
-    let recent=[]; try{recent=JSON.parse(localStorage.getItem('easycalc_recent')||'[]')}catch(e){}
-    if(!recent.length){strip.classList.remove('visible');return;}
-    strip.classList.add('visible');
-    strip.innerHTML='<div class="recent-title">Recently used</div><div class="recent-items">'+recent.map((n,i)=>'<button class="recent-item" type="button" data-recent="'+i+'">'+n+'</button>').join('')+'</div>';
-    strip.querySelectorAll('[data-recent]').forEach(btn=>btn.addEventListener('click',()=>{const n=recent[Number(btn.dataset.recent)]; const c=cards.find(x=>(x.querySelector('h3')?.textContent?.trim()||'')===n); if(c){c.scrollIntoView({behavior:'smooth',block:'center'}); c.animate([{transform:'scale(1)'},{transform:'scale(1.025)'},{transform:'scale(1)'}],{duration:450});}}));
-  }
+  function renderRecent() {
+    const strip = document.getElementById("recentStrip");
+    if (!strip) return;
+
+    let stored = [];
+    try {
+        const parsed = JSON.parse(localStorage.getItem("easycalc_recent") || "[]");
+        if (Array.isArray(parsed)) {
+            stored = parsed.filter(name => typeof name === "string").slice(0, 5);
+        }
+    } catch (error) {
+        // Ignore malformed local storage and render an empty recent list.
+    }
+
+    const recent = stored.filter(name =>
+        cards.some(card => (card.querySelector("h3")?.textContent?.trim() || "") === name)
+    );
+
+    strip.replaceChildren();
+    if (!recent.length) {
+        strip.classList.remove("visible");
+        return;
+    }
+
+    strip.classList.add("visible");
+
+    const title = document.createElement("div");
+    title.className = "recent-title";
+    title.textContent = "Recently used";
+
+    const items = document.createElement("div");
+    items.className = "recent-items";
+
+    recent.forEach(name => {
+        const button = document.createElement("button");
+        button.className = "recent-item";
+        button.type = "button";
+        button.textContent = name;
+        button.addEventListener("click", () => {
+            const card = cards.find(item =>
+                (item.querySelector("h3")?.textContent?.trim() || "") === name
+            );
+            if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.animate(
+                    [{ transform: "scale(1)" }, { transform: "scale(1.025)" }, { transform: "scale(1)" }],
+                    { duration: 450 }
+                );
+            }
+        });
+        items.appendChild(button);
+    });
+
+    strip.append(title, items);
+}
   renderRecent();
   const grid=document.querySelector('.calculator-grid');
   if(grid){ const no=document.createElement('div'); no.className='no-results'; no.id='noResults'; no.innerHTML='<strong>No calculators found</strong><span>Try a different search or category.</span>'; grid.after(no); }
