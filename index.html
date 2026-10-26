@@ -5456,7 +5456,11 @@ function reverseCalc() {
    CURRENCY
    ===================================================== */
 
+let currencyRequestId = 0;
+
 async function currencyCalc() {
+
+    const requestId = ++currencyRequestId;
 
     const amount =
         parseFloat(
@@ -5533,6 +5537,10 @@ async function currencyCalc() {
         }
 
         const data = await response.json();
+
+        // Ignore an older response if the user started a newer conversion.
+        if (requestId !== currencyRequestId) return;
+
         const rate = Number(data.rate);
 
         if (!Number.isFinite(rate) || rate <= 0) {
@@ -5565,6 +5573,9 @@ async function currencyCalc() {
         currencyAnimation();
 
     } catch (error) {
+        // A failed older request must not overwrite a newer result either.
+        if (requestId !== currencyRequestId) return;
+
         console.error("Currency conversion error:", error);
         result.innerHTML =
             "Unable to load the current exchange rate. Please check your internet connection and try again.";
