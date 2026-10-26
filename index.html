@@ -5203,12 +5203,15 @@ function averageCalc() {
 
     const parts = input
         .split(",")
-        .map(x => x.trim())
-        .filter(Boolean);
+        .map(x => x.trim());
 
     const numbers = parts.map(Number);
 
-    if (!parts.length || numbers.some(x => !Number.isFinite(x))) {
+    if (
+        !input.trim() ||
+        parts.some(x => x === "") ||
+        numbers.some(x => !Number.isFinite(x))
+    ) {
 
         showToast(
             "Enter numbers separated by commas."
