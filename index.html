@@ -5231,6 +5231,11 @@ function averageCalc() {
         sum /
         numbers.length;
 
+    if (!Number.isFinite(sum) || !Number.isFinite(average)) {
+        showToast("The numbers are too large to calculate safely.");
+        return;
+    }
+
     showResult(
         "averageResult",
         "averageCopy",
