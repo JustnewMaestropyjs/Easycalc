@@ -5785,17 +5785,22 @@ function filterCategory(category, button) {
    FAVORITES
    ===================================================== */
 
+function readFavoriteNames() {
+    try {
+        const stored = JSON.parse(localStorage.getItem("easycalcFavorites") || "[]");
+        return Array.isArray(stored) ? stored.filter(name => typeof name === "string") : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+
 function toggleFavorite(
     name,
     button
 ) {
 
-    let favorites =
-        JSON.parse(
-            localStorage.getItem(
-                "easycalcFavorites"
-            ) || "[]"
-        );
+    let favorites = readFavoriteNames();
 
     if (
         favorites.includes(name)
@@ -5842,12 +5847,11 @@ function toggleFavorite(
         "favorite-pop"
     );
 
-    localStorage.setItem(
-        "easycalcFavorites",
-        JSON.stringify(
-            favorites
-        )
-    );
+    try {
+        localStorage.setItem("easycalcFavorites", JSON.stringify(favorites));
+    } catch (error) {
+        showToast("Favorites could not be saved in this browser.");
+    }
 
     renderFavorites();
 
@@ -5860,12 +5864,7 @@ function toggleFavorite(
 
 function renderFavorites() {
 
-    const favorites =
-        JSON.parse(
-            localStorage.getItem(
-                "easycalcFavorites"
-            ) || "[]"
-        );
+    const favorites = readFavoriteNames();
 
     const section =
         document.getElementById(
@@ -5976,12 +5975,7 @@ function renderFavorites() {
 
 function restoreFavorites() {
 
-    const favorites =
-        JSON.parse(
-            localStorage.getItem(
-                "easycalcFavorites"
-            ) || "[]"
-        );
+    const favorites = readFavoriteNames();
 
     document
         .querySelectorAll(
