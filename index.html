@@ -5487,8 +5487,8 @@ async function currencyCalc() {
             "rateInfo"
         );
 
-    if (!Number.isFinite(amount) || amount <= 0) {
-        showToast("Enter a valid amount.");
+    if (!Number.isFinite(amount) || amount < 0) {
+        showToast("Enter an amount of zero or greater.");
         return;
     }
 
