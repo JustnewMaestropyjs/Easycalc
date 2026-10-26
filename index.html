@@ -5633,16 +5633,15 @@ function tipCalc() {
         );
 
     const people =
-        parseInt(
-            document.getElementById(
-                "tipPeople"
-            ).value
+        Number(
+            document.getElementById("tipPeople").value
         );
 
     if (
         !Number.isFinite(bill) ||
         !Number.isFinite(percent) ||
         !Number.isFinite(people) ||
+        !Number.isInteger(people) ||
         bill < 0 ||
         percent < 0 ||
         people < 1
