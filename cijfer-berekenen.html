@@ -244,6 +244,13 @@
     $('average-error').textContent = '';
   });
 
+  function invalidateGradeResult(mode, message, field) {
+    $(mode + '-error').textContent = message;
+    $(mode + '-result').textContent = '–';
+    $(mode + '-note').textContent = 'Controleer je invoer en bereken opnieuw.';
+    if (field) field.focus();
+  }
+
   $('calc-average').addEventListener('click', () => {
     const rows = [...document.querySelectorAll('.grade-row')];
     let weightedTotal = 0, weightTotal = 0;
@@ -253,10 +260,10 @@
       const grade = Number(gradeField.value);
       const weight = Number(weightField.value);
       if (gradeField.value.trim() === '' || !Number.isFinite(grade) || grade < 1 || grade > 10) {
-        $('average-error').textContent = 'Vul voor elk cijfer een getal tussen 1 en 10 in.'; gradeField.focus(); return;
+        invalidateGradeResult('average', 'Vul voor elk cijfer een getal tussen 1 en 10 in.', gradeField); return;
       }
       if (weightField.value.trim() === '' || !Number.isFinite(weight) || weight <= 0 || weight > 100) {
-        $('average-error').textContent = 'Elke weging moet groter zijn dan 0 en maximaal 100 zijn.'; weightField.focus(); return;
+        invalidateGradeResult('average', 'Elke weging moet groter zijn dan 0 en maximaal 100 zijn.', weightField); return;
       }
       weightedTotal += grade * weight;
       weightTotal += weight;
@@ -286,7 +293,7 @@
     ];
     for (const [field, value, min, max, message] of fields) {
       if (field.value.trim() === '' || !Number.isFinite(value) || value < min || value > max) {
-        $('needed-error').textContent = message; field.focus(); return;
+        invalidateGradeResult('needed', message, field); return;
       }
     }
     const required = (target * (currentWeight + nextWeight) - current * currentWeight) / nextWeight;
