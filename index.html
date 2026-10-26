@@ -5014,6 +5014,11 @@ function salaryCalc() {
     const yearly =
         weekly * 52;
 
+    if (![weekly, monthly, yearly].every(Number.isFinite)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
+
     showResult(
         "salaryResult",
         "salaryCopy",
