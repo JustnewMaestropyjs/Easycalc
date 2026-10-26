@@ -284,6 +284,12 @@
       }
     }
     const required = (target * (currentWeight + nextWeight) - current * currentWeight) / nextWeight;
+    if (!Number.isFinite(required)) {
+      $('needed-error').textContent = 'De berekening kon niet worden uitgevoerd.';
+      $('needed-result').textContent = '–';
+      $('needed-note').textContent = 'Controleer je invoer.';
+      return;
+    }
     $('needed-error').textContent = '';
     if (required > 10) {
       $('needed-result').textContent = '> 10';
@@ -292,8 +298,10 @@
       $('needed-result').textContent = '1,00 of hoger';
       $('needed-note').textContent = 'Met een 1 of hoger haal je je doelgemiddelde al.';
     } else {
-      $('needed-result').textContent = fmt(required);
-      $('needed-note').textContent = 'Dit is het benodigde cijfer vóór afronding door je school.';
+      // Never round the required minimum down to an insufficient displayed grade.
+      const minimum = Math.ceil((required - 1e-12) * 100) / 100;
+      $('needed-result').textContent = fmt(minimum);
+      $('needed-note').textContent = 'Minimaal benodigd cijfer op twee decimalen, zonder naar beneden af te ronden. Je school kan andere afrondingsregels hanteren.';
     }
   });
   updateRows();
