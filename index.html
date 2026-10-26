@@ -5505,12 +5505,8 @@ async function currencyCalc() {
 
     const requestId = ++currencyRequestId;
 
-    const amount =
-        parseFloat(
-            document.getElementById(
-                "currencyAmount"
-            ).value
-        );
+    const amountInput = document.getElementById("currencyAmount").value.trim();
+    const amount = Number(amountInput);
 
     const from =
         document.getElementById(
@@ -5537,7 +5533,7 @@ async function currencyCalc() {
             "rateInfo"
         );
 
-    if (!Number.isFinite(amount) || amount < 0) {
+    if (amountInput === "" || !Number.isFinite(amount) || amount < 0) {
         result.style.display = "none";
         copy.style.display = "none";
         info.style.display = "none";
