@@ -5106,7 +5106,9 @@ function ageCalc() {
     function monthAnniversary(monthOffset) {
         const targetYear = birth.getFullYear();
         const targetMonth = birth.getMonth() + monthOffset;
-        const lastDay = new Date(targetYear, targetMonth + 1, 0).getDate();
+        const monthEnd = new Date(0);
+        monthEnd.setFullYear(targetYear, targetMonth + 1, 0);
+        const lastDay = monthEnd.getDate();
         const anniversary = new Date(0);
         anniversary.setFullYear(targetYear, targetMonth, Math.min(birth.getDate(), lastDay));
         anniversary.setHours(0, 0, 0, 0);
