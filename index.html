@@ -5535,6 +5535,9 @@ async function currencyCalc() {
         );
 
     if (!Number.isFinite(amount) || amount < 0) {
+        result.style.display = "none";
+        copy.style.display = "none";
+        info.style.display = "none";
         showToast("Enter an amount of zero or greater.");
         return;
     }
