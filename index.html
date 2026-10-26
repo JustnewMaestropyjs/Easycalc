@@ -5759,6 +5759,11 @@ function copyResult(resultId) {
     const text =
         result.innerText;
 
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        showToast("Copying is not available in this browser.");
+        return;
+    }
+
     navigator.clipboard
         .writeText(text)
         .then(() => {
