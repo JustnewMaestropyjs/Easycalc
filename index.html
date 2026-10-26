@@ -5047,7 +5047,21 @@ function ageCalc() {
     }
 
     const [year, month, day] = value.split("-").map(Number);
-    const birth = new Date(year, month - 1, day);
+    const birth = new Date(0);
+    birth.setFullYear(year, month - 1, day);
+    birth.setHours(0, 0, 0, 0);
+
+    if (
+        !Number.isInteger(year) ||
+        !Number.isInteger(month) ||
+        !Number.isInteger(day) ||
+        birth.getFullYear() !== year ||
+        birth.getMonth() !== month - 1 ||
+        birth.getDate() !== day
+    ) {
+        showToast("Enter a valid birth date.");
+        return;
+    }
 
     const now = new Date();
     const today = new Date(
@@ -5133,11 +5147,28 @@ function dateCalc() {
 
     const [y1, m1, day1] = start.split("-").map(Number);
     const [y2, m2, day2] = end.split("-").map(Number);
-    const d1 = Date.UTC(y1, m1 - 1, day1);
-    const d2 = Date.UTC(y2, m2 - 1, day2);
+    const firstDate = new Date(Date.UTC(y1, m1 - 1, day1));
+    const secondDate = new Date(Date.UTC(y2, m2 - 1, day2));
 
-    const difference =
-        Math.abs(d2 - d1);
+    const validFirst =
+        Number.isInteger(y1) && Number.isInteger(m1) && Number.isInteger(day1) &&
+        firstDate.getUTCFullYear() === y1 &&
+        firstDate.getUTCMonth() === m1 - 1 &&
+        firstDate.getUTCDate() === day1;
+    const validSecond =
+        Number.isInteger(y2) && Number.isInteger(m2) && Number.isInteger(day2) &&
+        secondDate.getUTCFullYear() === y2 &&
+        secondDate.getUTCMonth() === m2 - 1 &&
+        secondDate.getUTCDate() === day2;
+
+    if (!validFirst || !validSecond) {
+        showToast("Enter valid calendar dates.");
+        return;
+    }
+
+    const d1 = firstDate.getTime();
+    const d2 = secondDate.getTime();
+    const difference = Math.abs(d2 - d1);
 
     const days =
         Math.round(
