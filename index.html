@@ -5306,6 +5306,11 @@ function timeCalc() {
 
     }
 
+    if (![hours, minutes, seconds].every(Number.isFinite)) {
+        showToast("Enter a valid, smaller amount.");
+        return;
+    }
+
     showResult(
         "timeResult",
         "timeCopy",
