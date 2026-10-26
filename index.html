@@ -5936,109 +5936,37 @@ function toggleFavorite(
    ===================================================== */
 
 function renderFavorites() {
-
     const favorites = readFavoriteNames();
+    const section = document.getElementById("favoritesSection");
+    const list = document.getElementById("favoriteList");
+    const cards = [...document.querySelectorAll(".calculator-card")];
+    list.replaceChildren();
 
-    const section =
-        document.getElementById(
-            "favoritesSection"
-        );
+    favorites.forEach(name => {
+        const card = cards.find(item => item.dataset.animation === name);
+        if (!card) return;
 
-    const list =
-        document.getElementById(
-            "favoriteList"
-        );
-
-    if (!favorites.length) {
-
-        section.classList.remove(
-            "show"
-        );
-
-        return;
-    }
-
-    section.classList.add(
-        "show"
-    );
-
-    list.innerHTML =
-        "";
-
-    favorites.forEach(
-        name => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.className =
-                "favorite-item";
-
-            const card = document.querySelector(
-                `.calculator-card[data-animation="${CSS.escape(name)}"]`
-            );
-
-            if (!card) return;
-
-            const title = card.querySelector("h3")?.textContent?.trim() || name;
-            button.textContent = title;
-
-            button.onclick =
-                () => {
-
-                    const cards =
-                        document.querySelectorAll(
-                            ".calculator-card"
-                        );
-
-                    let target = null;
-
-                    cards.forEach(
-                        card => {
-
-                            if (
-                                card.dataset.animation
-                                === name
-                            ) {
-
-                                target =
-                                    card;
-
-                            }
-
-                        }
-                    );
-
-                    if (target) {
-
-                        target.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center"
-                        });
-
-                        target.classList.remove(
-                            "search-match"
-                        );
-
-                        void target.offsetWidth;
-
-                        target.classList.add(
-                            "search-match"
-                        );
-
-                    }
-
-                };
-
-            list.appendChild(
-                button
-            );
-
-        }
-    );
-
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "favorite-item";
+        button.textContent = card.querySelector("h3")?.textContent?.trim() || name;
+        button.addEventListener("click", () => {
+            // A favorite must be reachable even when a search or category hides it.
+            const search = document.getElementById("search");
+            if (search) search.value = "";
+            currentCategory = "all";
+            document.querySelectorAll(".category-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.getAttribute("onclick")?.includes("filterCategory('all'") === true);
+            });
+            applyCalculatorFilters();
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+            card.classList.remove("search-match");
+            void card.offsetWidth;
+            card.classList.add("search-match");
+        });
+        list.appendChild(button);
+    });
+    section.classList.toggle("show", list.children.length > 0);
 }
 
 
