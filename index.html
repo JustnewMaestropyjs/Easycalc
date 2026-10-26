@@ -5956,8 +5956,7 @@ function renderFavorites() {
             if (search) search.value = "";
             currentCategory = "all";
             document.querySelectorAll(".category-btn").forEach(btn => {
-                btn.classList.toggle("active", btn.dataset.category === "all" ||
-                    (!btn.dataset.category && /all/i.test(btn.textContent.trim())));
+                btn.classList.toggle("active", btn.getAttribute("onclick")?.includes("filterCategory('all'") === true);
             });
             applyCalculatorFilters();
             card.scrollIntoView({ behavior: "smooth", block: "center" });
