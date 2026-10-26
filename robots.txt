@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Add your final absolute sitemap URL after choosing a domain:
-# Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://justnewmaestropyjs.github.io/Easycalc/sitemap.xml
