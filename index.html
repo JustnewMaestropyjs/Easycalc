@@ -9,11 +9,13 @@
 <meta name="description" content="EasyCalc provides fast and free online calculators for percentages, discounts, VAT, salary, age, BMI, currency conversion and more.">
 <meta name="keywords" content="calculator, online calculator, percentage calculator, discount calculator, VAT calculator, salary calculator, currency converter, BMI calculator">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://justnewmaestropyjs.github.io/Easycalc/">
 <meta name="theme-color" content="#5b5ce2">
 <meta name="application-name" content="EasyCalc">
 <meta name="apple-mobile-web-app-title" content="EasyCalc">
 <meta property="og:type" content="website">
 <meta property="og:title" content="EasyCalc - Free Online Calculators">
+<meta property="og:url" content="https://justnewmaestropyjs.github.io/Easycalc/">
 <meta property="og:description" content="Fast, free and easy online calculators for everyday calculations.">
 <meta property="og:site_name" content="EasyCalc">
 <meta name="twitter:card" content="summary">
@@ -26,12 +28,7 @@
   "@context":"https://schema.org",
   "@type":"WebSite",
   "name":"EasyCalc",
-  "description":"Free online calculators for everyday calculations.",
-  "potentialAction":{
-    "@type":"SearchAction",
-    "target":"?q={search_term_string}",
-    "query-input":"required name=search_term_string"
-  }
+  "description":"Free online calculators for everyday calculations."
 }
 </script>
 
@@ -5700,7 +5697,10 @@ function applyCalculatorFilters() {
         .toLowerCase()
         .trim();
 
-    document.querySelectorAll(".calculator-card").forEach(card => {
+    const cards = document.querySelectorAll(".calculator-card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
         const content = (
             card.innerText + " " + (card.dataset.keywords || "")
         ).toLowerCase();
@@ -5712,6 +5712,7 @@ function applyCalculatorFilters() {
         const visible = categoryMatch && searchMatch;
 
         card.classList.toggle("hidden", !visible);
+        if (visible) visibleCount++;
 
         if (visible && query) {
             card.classList.remove("search-match");
@@ -5719,6 +5720,12 @@ function applyCalculatorFilters() {
             card.classList.add("search-match");
         }
     });
+
+    // Show a helpful message if the current search/category has no matches.
+    const noResults = document.getElementById("noResults");
+    if (noResults) {
+        noResults.classList.toggle("visible", visibleCount === 0);
+    }
 }
 
 function searchCalculators() {
