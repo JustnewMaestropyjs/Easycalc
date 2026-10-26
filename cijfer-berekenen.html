@@ -262,6 +262,12 @@
       weightTotal += weight;
     }
     const average = weightedTotal / weightTotal;
+    if (!Number.isFinite(average)) {
+      $('average-error').textContent = 'De berekening kon niet worden uitgevoerd.';
+      $('average-result').textContent = '–';
+      $('average-note').textContent = 'Controleer je invoer.';
+      return;
+    }
     $('average-result').textContent = fmt(average);
     $('average-note').textContent = 'Gebaseerd op ' + rows.length + ' cijfers en een totale weging van ' + fmt(weightTotal) + '.';
     $('average-error').textContent = '';
