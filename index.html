@@ -5168,8 +5168,11 @@ function dateCalc() {
 
     const [y1, m1, day1] = start.split("-").map(Number);
     const [y2, m2, day2] = end.split("-").map(Number);
-    const firstDate = new Date(Date.UTC(y1, m1 - 1, day1));
-    const secondDate = new Date(Date.UTC(y2, m2 - 1, day2));
+    // Date.UTC maps years 0-99 to 1900-1999, so set the full year explicitly.
+    const firstDate = new Date(0);
+    firstDate.setUTCFullYear(y1, m1 - 1, day1);
+    const secondDate = new Date(0);
+    secondDate.setUTCFullYear(y2, m2 - 1, day2);
 
     const validFirst =
         Number.isInteger(y1) && Number.isInteger(m1) && Number.isInteger(day1) &&
