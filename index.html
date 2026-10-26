@@ -4857,6 +4857,11 @@ function percentageCalc() {
     const result =
         number * p / 100;
 
+    if (!Number.isFinite(result)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
+
     showResult(
         "percentageResult",
         "percentageCopy",
@@ -4906,6 +4911,11 @@ function discountCalc() {
 
     const finalPrice =
         price - saved;
+
+    if (![saved, finalPrice].every(Number.isFinite)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
 
     showResult(
         "discountResult",
@@ -4958,6 +4968,11 @@ function vatCalc() {
 
     const total =
         price + vatAmount;
+
+    if (![vatAmount, total].every(Number.isFinite)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
 
     showResult(
         "vatResult",
@@ -5375,6 +5390,11 @@ function bmiCalc() {
         weight /
         (meters * meters);
 
+    if (!Number.isFinite(bmi)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
+
     let category;
 
     if (
@@ -5691,6 +5711,11 @@ function tipCalc() {
 
     const perPerson =
         total / people;
+
+    if (![tip, total, perPerson].every(Number.isFinite)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
 
     showResult(
         "tipResult",
