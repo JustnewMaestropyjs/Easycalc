@@ -5476,6 +5476,11 @@ function reverseCalc() {
         finalPrice /
         (1 - discount / 100);
 
+    if (!Number.isFinite(original)) {
+        showToast("These values are too large to calculate safely.");
+        return;
+    }
+
     showResult(
         "reverseResult",
         "reverseCopy",
