@@ -5697,7 +5697,10 @@ function applyCalculatorFilters() {
         .toLowerCase()
         .trim();
 
-    document.querySelectorAll(".calculator-card").forEach(card => {
+    const cards = document.querySelectorAll(".calculator-card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
         const content = (
             card.innerText + " " + (card.dataset.keywords || "")
         ).toLowerCase();
@@ -5709,6 +5712,7 @@ function applyCalculatorFilters() {
         const visible = categoryMatch && searchMatch;
 
         card.classList.toggle("hidden", !visible);
+        if (visible) visibleCount++;
 
         if (visible && query) {
             card.classList.remove("search-match");
@@ -5716,6 +5720,12 @@ function applyCalculatorFilters() {
             card.classList.add("search-match");
         }
     });
+
+    // Show a helpful message if the current search/category has no matches.
+    const noResults = document.getElementById("noResults");
+    if (noResults) {
+        noResults.classList.toggle("visible", visibleCount === 0);
+    }
 }
 
 function searchCalculators() {
