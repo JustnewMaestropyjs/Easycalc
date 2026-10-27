@@ -6218,11 +6218,21 @@ if('serviceWorker' in navigator && location.protocol !== 'file:') {
                 (item.querySelector("h3")?.textContent?.trim() || "") === name
             );
             if (card) {
+                // Reveal recent calculators hidden by the current search/category.
+                const search = document.getElementById("search");
+                if (search) search.value = "";
+                currentCategory = "all";
+                document.querySelectorAll(".category-btn").forEach(btn => {
+                    btn.classList.toggle("active", btn.getAttribute("onclick")?.includes("filterCategory('all'") === true);
+                });
+                applyCalculatorFilters();
                 card.scrollIntoView({ behavior: "smooth", block: "center" });
-                card.animate(
-                    [{ transform: "scale(1)" }, { transform: "scale(1.025)" }, { transform: "scale(1)" }],
-                    { duration: 450 }
-                );
+                if (typeof card.animate === "function") {
+                    card.animate(
+                        [{ transform: "scale(1)" }, { transform: "scale(1.025)" }, { transform: "scale(1)" }],
+                        { duration: 450 }
+                    );
+                }
             }
         });
         items.appendChild(button);
