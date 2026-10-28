@@ -85,7 +85,7 @@
     if (tool === 'time') {
       const start = $('start').value, end = $('end').value, pause = number($('pause').value);
       const toMinutes = value => {
-        if (!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(value)) return NaN;
+        if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(value)) return NaN;
         const [hours, minutes] = value.split(':').map(Number);
         return hours * 60 + minutes;
       };
