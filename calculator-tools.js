@@ -20,6 +20,100 @@
   };
   function calculate() {
     $('error').textContent = '';
+    if (tool === 'weighted') {
+      const rows = [...document.querySelectorAll('.grade-row')];
+      if (!rows.length) { fail('Voeg minimaal één cijfer toe.'); return; }
+      let total = 0, weights = 0;
+      for (const row of rows) {
+        const gradeField = row.querySelector('.grade-input');
+        const weightField = row.querySelector('.weight-input');
+        const grade = number(gradeField.value), weight = number(weightField.value);
+        if (!Number.isFinite(grade) || grade < 1 || grade > 10) { fail('Elk cijfer moet tussen 1 en 10 liggen.'); gradeField.focus(); return; }
+        if (!Number.isFinite(weight) || weight <= 0 || weight > 100) { fail('Elke weging moet groter zijn dan 0 en maximaal 100 zijn.'); weightField.focus(); return; }
+        total += grade * weight; weights += weight;
+      }
+      const average = total / weights;
+      $('result-label').textContent = 'Gewogen gemiddelde';
+      $('result-main').textContent = fmt(average);
+      $('result-detail').textContent = 'Som van cijfer × weging: ' + fmt(total) + '. Totale weging: ' + fmt(weights) + '.';
+      lastCopy = fmt(average);
+      return;
+    }
+    if (tool === 'needed') {
+      const fields = [
+        [$('current-grade'), 1, 10, 'Je huidige gemiddelde moet tussen 1 en 10 liggen.'],
+        [$('current-weight'), 0.1, 100, 'De huidige weging moet groter zijn dan 0 en maximaal 100 zijn.'],
+        [$('target-grade'), 1, 10, 'Je doelgemiddelde moet tussen 1 en 10 liggen.'],
+        [$('next-weight'), 0.1, 100, 'De weging van de volgende toets moet groter zijn dan 0 en maximaal 100 zijn.']
+      ];
+      const values = [];
+      for (const [field, min, max, message] of fields) {
+        const value = number(field.value);
+        if (field.value.trim() === '' || !Number.isFinite(value) || value < min || value > max) { fail(message); field.focus(); return; }
+        values.push(value);
+      }
+      const [current, currentWeight, target, nextWeight] = values;
+      const required = (target * (currentWeight + nextWeight) - current * currentWeight) / nextWeight;
+      $('result-label').textContent = 'Benodigd cijfer';
+      if (required > 10) {
+        $('result-main').textContent = '> 10';
+        $('result-detail').textContent = 'Dit doel is met alleen de volgende toets niet haalbaar.';
+        lastCopy = '> 10, doel niet haalbaar met één toets';
+      } else if (required <= 1) {
+        $('result-main').textContent = '1,00 of hoger';
+        $('result-detail').textContent = 'Een 1 of hoger is voldoende om je doelgemiddelde te bereiken.';
+        lastCopy = '1,00 of hoger';
+      } else {
+        const minimum = Math.ceil((required - 1e-12) * 100) / 100;
+        $('result-main').textContent = fmt(minimum);
+        $('result-detail').textContent = 'Minimaal benodigd cijfer op twee decimalen; je school kan andere afrondingsregels hanteren.';
+        lastCopy = fmt(minimum);
+      }
+      return;
+    }
+    if (tool === 'hourly') {
+      const wage = number($('amount').value), hours = number($('hours').value);
+      if (!Number.isFinite(wage) || wage < 0 || $('amount').value.trim() === '') { fail('Vul een geldig bruto uurloon van 0 of hoger in.'); $('amount').focus(); return; }
+      if (!Number.isFinite(hours) || hours <= 0 || hours > 168 || $('hours').value.trim() === '') { fail('Vul uren per week in tussen 0 en 168.'); $('hours').focus(); return; }
+      const week = wage * hours, month = wage * hours * 52 / 12, year = wage * hours * 52;
+      $('result-label').textContent = 'Bruto salaris bij ' + fmt(hours) + ' uur per week';
+      $('result-main').textContent = euro(month) + ' per maand';
+      $('result-detail').textContent = 'Per week: ' + euro(week) + ' · Per jaar: ' + euro(year) + '. Exclusief vakantiegeld, toeslagen en inhoudingen.';
+      lastCopy = 'Bruto per week: ' + euro(week) + '\nBruto per maand: ' + euro(month) + '\nBruto per jaar: ' + euro(year);
+      return;
+    }
+    if (tool === 'time') {
+      const start = $('start').value, end = $('end').value, pause = number($('pause').value);
+      const toMinutes = value => {
+        if (!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(value)) return NaN;
+        const [hours, minutes] = value.split(':').map(Number);
+        return hours * 60 + minutes;
+      };
+      let startMinutes = toMinutes(start), endMinutes = toMinutes(end);
+      if (!Number.isFinite(startMinutes)) { fail('Vul een geldige begintijd in.'); $('start').focus(); return; }
+      if (!Number.isFinite(endMinutes)) { fail('Vul een geldige eindtijd in.'); $('end').focus(); return; }
+      if (!Number.isFinite(pause) || pause < 0 || pause > 1440 || $('pause').value.trim() === '') { fail('Pauze moet tussen 0 en 1.440 minuten liggen.'); $('pause').focus(); return; }
+      if (endMinutes < startMinutes) endMinutes += 1440;
+      const minutes = endMinutes - startMinutes - pause;
+      if (minutes < 0) { fail('De pauze kan niet langer zijn dan de berekende tijdsduur.'); $('pause').focus(); return; }
+      const hours = Math.floor(minutes / 60), remainder = minutes % 60;
+      $('result-label').textContent = 'Netto tijdsduur';
+      $('result-main').textContent = hours + ' uur ' + remainder + ' min';
+      $('result-detail').textContent = 'Totaal: ' + fmt(minutes / 60) + ' uur, inclusief eventuele overgang naar de volgende dag en exclusief pauze.';
+      lastCopy = hours + ' uur ' + remainder + ' min';
+      return;
+    }
+    if (tool === 'bmi') {
+      const height = number($('height').value), weight = number($('weight').value);
+      if (!Number.isFinite(height) || height < 50 || height > 250 || $('height').value.trim() === '') { fail('Vul een lengte in tussen 50 en 250 cm.'); $('height').focus(); return; }
+      if (!Number.isFinite(weight) || weight < 2 || weight > 500 || $('weight').value.trim() === '') { fail('Vul een gewicht in tussen 2 en 500 kg.'); $('weight').focus(); return; }
+      const bmi = weight / ((height / 100) ** 2);
+      $('result-label').textContent = 'BMI (rekenkundige uitkomst)';
+      $('result-main').textContent = fmt(bmi);
+      $('result-detail').textContent = 'BMI is een globale maat en geen diagnose. Voor personen jonger dan 18 jaar is beoordeling op leeftijd en groei nodig.';
+      lastCopy = fmt(bmi);
+      return;
+    }
     const amountField = $('amount');
     const amount = number(amountField.value);
     if (amountField.value.trim() === '' || !Number.isFinite(amount) || amount < 0) {
