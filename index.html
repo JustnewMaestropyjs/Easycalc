@@ -5868,66 +5868,25 @@ function readFavoriteNames() {
 }
 
 
-function toggleFavorite(
-    name,
-    button
-) {
-
-    let favorites = readFavoriteNames();
-
-    if (
-        favorites.includes(name)
-    ) {
-
-        favorites =
-            favorites.filter(
-                x =>
-                    x !== name
-            );
-
-        button.classList.remove(
-            "active"
-        );
-
-        button.innerHTML =
-            "☆";
-
-    } else {
-
-        favorites.push(name);
-
-        button.classList.add(
-            "active"
-        );
-
-        button.innerHTML =
-            "★";
-
-        createBurst(
-            ["★","✨","⭐"],
-            6
-        );
-
-    }
-
-    button.classList.remove(
-        "favorite-pop"
-    );
-
-    void button.offsetWidth;
-
-    button.classList.add(
-        "favorite-pop"
-    );
+function toggleFavorite(name, button) {
+    const favorites = readFavoriteNames();
+    const adding = !favorites.includes(name);
+    const updated = adding ? [...favorites, name] : favorites.filter(x => x !== name);
 
     try {
-        localStorage.setItem("easycalcFavorites", JSON.stringify(favorites));
+        localStorage.setItem("easycalcFavorites", JSON.stringify(updated));
     } catch (error) {
         showToast("Favorites could not be saved in this browser.");
+        return;
     }
 
+    button.classList.toggle("active", adding);
+    button.textContent = adding ? "★" : "☆";
+    button.classList.remove("favorite-pop");
+    void button.offsetWidth;
+    button.classList.add("favorite-pop");
+    if (adding) createBurst(["★", "✨", "⭐"], 6);
     renderFavorites();
-
 }
 
 
