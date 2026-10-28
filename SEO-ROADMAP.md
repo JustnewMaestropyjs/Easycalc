@@ -1,7 +1,7 @@
 # EasyCalc SEO and quality roadmap (Netherlands)
 
 ## Data availability
-Google Search Console query and page reports were not available through the connected tools during this review. Do not treat the keyword priorities below as measured search volume. Export **Performance → Search results → Queries and Pages** for the last 3 and 12 months, then revise priorities using impressions, clicks, CTR, average position and page-level conversion.
+Google Search Console query and page reports were not available through the connected tools during this review. A prior check on 13 September 2026 reported **0 web-search clicks** and that Google was still processing data; it did not provide query terms, impressions, CTR, average position or a current page-level performance report. That is a historical baseline, not a claim about today's metrics. Do not treat the keyword priorities below as measured search volume. Export **Performance → Search results → Queries and Pages** for the last 3 and 12 months, then revise priorities using impressions, clicks, CTR, average position and page-level conversion.
 
 ## Initial Dutch query clusters and page intent
 These are candidate phrases based on the language used by Dutch calculator pages and competitor titles, not volume estimates.
