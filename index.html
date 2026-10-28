@@ -2546,7 +2546,7 @@ button, a, input, select { touch-action: manipulation; }
             <select
                 id="language"
                 class="language-select"
-                aria-label="Select language" id="languageLabel"
+                aria-label="Select language"
                 onchange="changeLanguage()"
             >
                 <option value="en">English</option>
@@ -4452,7 +4452,7 @@ function changeLanguage() {
     document.getElementById("exploreAction").textContent = t.explore;
     document.getElementById("searchAction").textContent = t.searchAction;
     document.getElementById("heroTrust").textContent = t.trust;
-    document.getElementById("languageLabel").setAttribute("aria-label", t.languageLabel);
+    document.getElementById("language").setAttribute("aria-label", t.languageLabel);
     document.getElementById("search").setAttribute("aria-label", t.searchLabel);
     document.getElementById("categoryAll").textContent = t.categoryAll;
     document.getElementById("categoryMoney").textContent = t.categoryMoney;
@@ -6417,8 +6417,6 @@ if (savedLanguage) {
 
 }
 
-// Apply the selected language on first render, not only after manual changes.
-changeLanguage();
 
 
 if (
