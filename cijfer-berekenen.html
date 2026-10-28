@@ -85,7 +85,7 @@
     footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     @media(max-width:780px){.layout,.content-grid{grid-template-columns:1fr}.hero{padding-top:42px}.layout{padding-top:12px}.side-panel{margin-top:14px}}
     @media(max-width:440px){.wrap{width:min(100% - 22px,1100px)}.nav{height:62px}.grade-row{grid-template-columns:minmax(0,1fr) 84px 36px;gap:6px}.grade-row input{padding:10px 8px}.tab{font-size:.82rem}.actions .btn{flex:1}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    
   
     /* EasyCalc premium design system: aligned with the main calculator hub */
     :root{
@@ -173,17 +173,16 @@
       .btn-secondary:hover{background:#443a29;border-color:#78613a}
       footer{border-top-color:var(--line);color:var(--muted)}
       input:focus-visible,button:focus-visible,a:focus-visible{outline-color:rgba(213,181,121,.65)}
-    }
+    
 
-  
-    @media(prefers-color-scheme:dark){
       .result{background:#2b2922;border-color:#514630}
       .result-number{color:#e5c88f}
       .error{color:#ffb4a9}
       .side-panel{background:#24231f;border:1px solid #494335}
       .side-panel p{color:#c6c0b3}
       .step-num{background:#393124;color:#e5c88f}
-    }
+    
+}
 
   </style>
 </head>
