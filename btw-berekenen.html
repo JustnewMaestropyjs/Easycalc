@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BTW berekenen | EasyCalc</title>
+<meta name="description" content="Bereken BTW over een bedrag of reken BTW terug uit een prijs inclusief BTW. Kies het BTW-tarief en bekijk bedragen exclusief, BTW en inclusief.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://justnewmaestropyjs.github.io/Easycalc/btw-berekenen.html">
+<meta name="theme-color" content="#24231f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BTW berekenen | EasyCalc">
+<meta property="og:description" content="Bereken BTW over een bedrag of reken BTW terug uit een prijs inclusief BTW. Kies het BTW-tarief en bekijk bedragen exclusief, BTW en inclusief.">
+<meta property="og:url" content="https://justnewmaestropyjs.github.io/Easycalc/btw-berekenen.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"BTW berekenen - EasyCalc","url":"https://justnewmaestropyjs.github.io/Easycalc/btw-berekenen.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Bereken BTW over een bedrag of reken BTW terug uit een prijs inclusief BTW. Kies het BTW-tarief en bekijk bedragen exclusief, BTW en inclusief."}
+</script>
+<link rel="stylesheet" href="./calculator-tools.css">
+<script src="./calculator-tools.js" defer></script>
+</head>
+<body data-tool="vat">
+<header><nav class="nav wrap" aria-label="Hoofdnavigatie"><a class="logo" href="./">EasyCalc</a><a class="back" href="./">← Alle calculators</a></nav></header>
+<main>
+<section class="hero wrap"><span class="eyebrow">Gratis rekenhulp</span><h1>BTW berekenen</h1><p>Bereken de BTW en het totaalbedrag. Kies of je begint met een bedrag exclusief of inclusief BTW.</p></section>
+<div class="wrap layout">
+<section class="panel" aria-labelledby="tool-title">
+<h2 id="tool-title">BTW berekenen</h2><p class="sub">Vul je waarden in en bereken direct. Gebruik een komma of punt als decimaalteken.</p>
+<form id="tool-form" novalidate>
+<div class="field"><label for="amount">Bedrag (€)</label><input id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" value="121,00" placeholder="Bijv. 79,95" required></div><div class="field"><label for="rate">BTW-tarief</label><select id="rate" name="rate"><option value="21" selected>21% (hoog tarief)</option><option value="9">9% (laag tarief)</option><option value="0">0%</option></select></div><div class="field"><label for="mode">Ik voer een bedrag in</label><select id="mode" name="mode"><option value="exclusive" selected>Exclusief BTW</option><option value="inclusive">Inclusief BTW</option></select></div>
+<div class="actions"><button class="btn" id="calculate" type="button">Bereken</button><button class="btn secondary" id="reset" type="reset">Reset</button></div>
+</form>
+<div class="result" aria-live="polite" aria-atomic="true"><div class="result-label" id="result-label">Voorbeeldresultaat</div><div class="result-main" id="result-main">Vul je gegevens in</div><p class="result-detail" id="result-detail"></p><div class="actions"><button class="btn secondary" id="copy" type="button">Kopieer resultaat</button><span class="result-detail" id="copy-status" role="status"></span></div></div>
+<p class="status" id="error" role="alert"></p>
+</section>
+<aside class="panel"><h2>Voorbeeld</h2><p class="example">€ 100 exclusief 21% BTW betekent € 21 BTW en € 121 inclusief BTW.</p><h2 style="margin-top:22px">Hoe werkt het?</h2><p>Bij een bedrag exclusief BTW: BTW = bedrag × tarief ÷ 100. Bij een bedrag inclusief BTW: exclusief = inclusief ÷ (1 + tarief ÷ 100). De BTW is het verschil.</p><p class="sub">Je berekening gebeurt in je browser. De ingevoerde waarden worden niet door deze rekenhulp naar een server verstuurd.</p></aside>
+</div>
+<section class="content wrap"><article class="panel"><h2>Veelgestelde vraag</h2><h3>Hoe reken je BTW terug uit een bedrag inclusief BTW?</h3><p>Deel het bedrag inclusief BTW door 1 + het BTW-percentage gedeeld door 100. Bij 21% deel je dus door 1,21.</p></article></section>
+</main>
+<footer><div class="wrap">© 2026 EasyCalc · <a href="./">Terug naar de startpagina</a></div></footer>
+</body></html>
