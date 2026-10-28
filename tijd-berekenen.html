@@ -15,5 +15,16 @@
 <form id="tool-form" novalidate><div class="field"><label for="start">Begintijd</label><input id="start" name="start" type="time" value="09:00" required></div><div class="field"><label for="end">Eindtijd</label><input id="end" name="end" type="time" value="17:30" required></div><div class="field"><label for="pause">Pauze in minuten</label><input id="pause" name="pause" type="text" inputmode="decimal" autocomplete="off" value="30" placeholder="Bijv. 30" required></div><div class="actions"><button class="btn" id="calculate" type="button">Bereken</button><button class="btn secondary" id="reset" type="reset">Reset</button></div></form>
 <div class="result" aria-live="polite" aria-atomic="true"><div class="result-label" id="result-label">Voorbeeldresultaat</div><div class="result-main" id="result-main">Vul je gegevens in</div><p class="result-detail" id="result-detail"></p><div class="actions"><button class="btn secondary" id="copy" type="button">Kopieer resultaat</button><span class="result-detail" id="copy-status" role="status"></span></div></div><p class="status" id="error" role="alert"></p>
 </section><aside class="panel"><h2>Voorbeeld</h2><p class="example">Van 09:00 tot 17:30 is 8 uur en 30 minuten. Na 30 minuten pauze blijft 8 uur netto over.</p><h2 style="margin-top:22px">Hoe werkt het?</h2><p>De calculator trekt de begintijd af van de eindtijd en haalt de pauze eraf. Als de eindtijd eerder op de klok valt dan de begintijd, wordt aangenomen dat je na middernacht eindigt.</p></aside></div>
-<section class="content wrap"><article class="panel"><h2>Veelgestelde vraag</h2><h3>Kan ik een dienst over middernacht berekenen?</h3><p>Ja. Als de eindtijd eerder is dan de begintijd, behandelt de calculator de eindtijd als de volgende dag.</p></article></section></main>
+<section class="content wrap"><article class="panel"><h2>Veelgestelde vraag</h2><h3>Kan ik een dienst over middernacht berekenen?</h3><p>Ja. Als de eindtijd eerder is dan de begintijd, behandelt de calculator de eindtijd als de volgende dag.</p></article></section>
+<section class="content wrap related-tools" aria-labelledby="related-tools-title">
+  <article class="panel">
+    <h2 id="related-tools-title">Gerelateerde calculators</h2>
+    <nav class="related-links" aria-label="Gerelateerde calculators">
+    <a href="./uurloon-berekenen.html">Uurloon berekenen</a>
+    <a href="./cijfer-berekenen.html">Cijfer berekenen</a>
+    <a href="./percentage-berekenen.html">Percentage berekenen</a>
+    </nav>
+  </article>
+</section>
+</main>
 <footer><div class="wrap">© 2026 EasyCalc · <a href="./">Terug naar de startpagina</a></div></footer></body></html>
