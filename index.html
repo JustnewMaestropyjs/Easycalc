@@ -5124,10 +5124,12 @@ function ageCalc() {
     const years = Math.floor(totalMonths / 12);
     const months = totalMonths % 12;
     // Use UTC calendar components to avoid DST affecting the day count.
-    const days = Math.round((
-        Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) -
-        Date.UTC(anniversary.getFullYear(), anniversary.getMonth(), anniversary.getDate())
-    ) / 86400000);
+    function utcCalendarTime(date) {
+        const utc = new Date(0);
+        utc.setUTCFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+        return utc.getTime();
+    }
+    const days = Math.round((utcCalendarTime(today) - utcCalendarTime(anniversary)) / 86400000);
 
     showResult(
         "ageResult",
