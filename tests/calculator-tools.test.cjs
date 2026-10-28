@@ -177,7 +177,7 @@ test('net pay estimate returns a labeled estimate for a typical monthly salary',
 test('weighted average rejects a zero weight', () => {
   const app = createCalculator('weighted', {}, [{ grade: '7', weight: '0' }]);
   app.calculate();
-  assert.match(app.element('error').textContent, /weging groter dan 0/i);
+  assert.match(app.element('error').textContent, /weging moet groter dan 0/i);
 });
 
 test('weighted average accepts boundary grades 1 and 10', () => {
@@ -233,5 +233,5 @@ test('time calculator rejects a break longer than the shift', () => {
 test('net pay estimate rejects an empty salary', () => {
   const app = createCalculator('net', { salary: '', credits: true, holiday: false });
   app.calculate();
-  assert.match(app.element('error').textContent, /geldig bruto maandsalaris/i);
+  assert.match(app.element('error').textContent, /geldig bruto maandloon/i);
 });
