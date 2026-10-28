@@ -5638,6 +5638,8 @@ async function currencyCalc() {
         console.error("Currency conversion error:", error);
         result.innerHTML =
             "Unable to load the current exchange rate. Please check your internet connection and try again.";
+        copy.style.display = "none";
+        info.style.display = "none";
     }
 }
 
