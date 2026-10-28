@@ -20,6 +20,7 @@
   };
   function calculate() {
     $('error').textContent = '';
+    $('copy-status').textContent = '';
     if (tool === 'weighted') {
       const rows = [...document.querySelectorAll('.grade-row')];
       if (!rows.length) { fail('Voeg minimaal één cijfer toe.'); return; }
@@ -92,7 +93,7 @@
       let startMinutes = toMinutes(start), endMinutes = toMinutes(end);
       if (!Number.isFinite(startMinutes)) { fail('Vul een geldige begintijd in.'); $('start').focus(); return; }
       if (!Number.isFinite(endMinutes)) { fail('Vul een geldige eindtijd in.'); $('end').focus(); return; }
-      if (!Number.isFinite(pause) || pause < 0 || pause > 1440 || $('pause').value.trim() === '') { fail('Pauze moet tussen 0 en 1.440 minuten liggen.'); $('pause').focus(); return; }
+      if (!Number.isFinite(pause) || !Number.isInteger(pause) || pause < 0 || pause > 1440 || $('pause').value.trim() === '') { fail('Pauze moet een heel aantal minuten tussen 0 en 1.440 zijn.'); $('pause').focus(); return; }
       if (endMinutes < startMinutes) endMinutes += 1440;
       const minutes = endMinutes - startMinutes - pause;
       if (minutes < 0) { fail('De pauze kan niet langer zijn dan de berekende tijdsduur.'); $('pause').focus(); return; }
