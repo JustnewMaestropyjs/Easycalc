@@ -18,6 +18,21 @@
     $('result-detail').textContent = '';
     lastCopy = '';
   };
+  function updateDiscountMode() {
+    const mode = $('discount-mode')?.value || 'normal';
+    const amountLabel = $('amount-label');
+    const rate2Field = $('rate2-field');
+    if (amountLabel) amountLabel.textContent = mode === 'reverse' ? 'Prijs na korting (€)' : 'Oorspronkelijke prijs (€)';
+    if (rate2Field) rate2Field.hidden = mode !== 'stacked';
+    const sub = document.querySelector('.panel .sub');
+    if (sub && tool === 'discount') {
+      sub.textContent = mode === 'reverse'
+        ? 'Vul de prijs na korting en het kortingspercentage in om de oude prijs terug te rekenen.'
+        : mode === 'stacked'
+          ? 'Vul de oorspronkelijke prijs en beide kortingspercentages in. De tweede korting gaat van de al verlaagde prijs af.'
+          : 'Vul de oorspronkelijke prijs en het kortingspercentage in om de nieuwe prijs en besparing te zien.';
+    }
+  }
   function calculate() {
     $('error').textContent = '';
     $('copy-status').textContent = '';
@@ -153,7 +168,59 @@
       amountField.focus();
       return;
     }
-    if (tool === 'percentage' || tool === 'discount') {
+    if (tool === 'discount') {
+      const mode = $('discount-mode')?.value || 'normal';
+      const rateField = $('rate');
+      const rate = number(rateField.value);
+      if (rateField.value.trim() === '' || !Number.isFinite(rate) || rate < 0 || rate > 100) {
+        fail('Vul een kortingspercentage tussen 0 en 100 in.');
+        rateField.focus();
+        return;
+      }
+      if (mode === 'reverse') {
+        if (rate >= 100) {
+          fail('Bij 100% korting kun je de oorspronkelijke prijs niet terugrekenen, omdat de nieuwe prijs 0 is.');
+          rateField.focus();
+          return;
+        }
+        const original = amount / (1 - rate / 100);
+        if (!Number.isFinite(original)) { fail('Deze waarden zijn te groot om veilig te berekenen.'); return; }
+        const saving = original - amount;
+        $('result-label').textContent = 'Oorspronkelijke prijs vóór korting';
+        $('result-main').textContent = euro(original);
+        $('result-detail').textContent = 'Prijs na korting: ' + euro(amount) + ' · Besparing: ' + euro(saving) + ' · Korting: ' + fmt(rate) + '%.';
+        lastCopy = 'Oorspronkelijke prijs: ' + euro(original) + '\nPrijs na korting: ' + euro(amount) + '\nBesparing: ' + euro(saving);
+        return;
+      }
+      if (mode === 'stacked') {
+        const secondField = $('rate2');
+        const second = number(secondField.value);
+        if (secondField.value.trim() === '' || !Number.isFinite(second) || second < 0 || second > 100) {
+          fail('Vul een tweede kortingspercentage tussen 0 en 100 in.');
+          secondField.focus();
+          return;
+        }
+        const afterFirst = amount * (1 - rate / 100);
+        const finalPrice = afterFirst * (1 - second / 100);
+        const saving = amount - finalPrice;
+        const effective = amount === 0 ? 0 : saving / amount * 100;
+        if (![afterFirst, finalPrice, saving, effective].every(Number.isFinite)) { fail('Deze waarden zijn te groot om veilig te berekenen.'); return; }
+        $('result-label').textContent = 'Prijs na stapelkorting';
+        $('result-main').textContent = euro(finalPrice);
+        $('result-detail').textContent = 'Na ' + fmt(rate) + '%: ' + euro(afterFirst) + ' · Daarna ' + fmt(second) + '% · Totale besparing: ' + euro(saving) + ' (' + fmt(effective) + '% effectief).';
+        lastCopy = 'Prijs na stapelkorting: ' + euro(finalPrice) + '\nBesparing: ' + euro(saving) + '\nEffectieve korting: ' + fmt(effective) + '%';
+        return;
+      }
+      const saving = amount * rate / 100;
+      const finalPrice = amount - saving;
+      if (![saving, finalPrice].every(Number.isFinite)) { fail('Deze waarden zijn te groot om veilig te berekenen.'); return; }
+      $('result-label').textContent = 'Prijs na ' + fmt(rate) + '% korting';
+      $('result-main').textContent = euro(finalPrice);
+      $('result-detail').textContent = 'Je bespaart ' + euro(saving) + '. Oorspronkelijke prijs: ' + euro(amount) + '.';
+      lastCopy = 'Prijs na korting: ' + euro(finalPrice) + '\nBesparing: ' + euro(saving);
+      return;
+    }
+    if (tool === 'percentage') {
       const rateField = $('rate');
       const rate = number(rateField.value);
       if (rateField.value.trim() === '' || !Number.isFinite(rate) || rate < 0 || rate > 1000000) {
@@ -161,25 +228,12 @@
         rateField.focus();
         return;
       }
-      if (tool === 'percentage') {
-        const result = amount * rate / 100;
-        $('result-label').textContent = fmt(rate) + '% van ' + fmt(amount) + ' is';
-        $('result-main').textContent = fmt(result);
-        $('result-detail').textContent = 'Berekening: ' + fmt(amount) + ' × ' + fmt(rate) + ' ÷ 100.';
-        lastCopy = fmt(result);
-      } else {
-        if (rate > 100) {
-          fail('Een kortingspercentage kan niet hoger zijn dan 100%.');
-          rateField.focus();
-          return;
-        }
-        const saving = amount * rate / 100;
-        const finalPrice = amount - saving;
-        $('result-label').textContent = 'Prijs na ' + fmt(rate) + '% korting';
-        $('result-main').textContent = euro(finalPrice);
-        $('result-detail').textContent = 'Je bespaart ' + euro(saving) + '. Oorspronkelijke prijs: ' + euro(amount) + '.';
-        lastCopy = 'Prijs na korting: ' + euro(finalPrice) + '\nBesparing: ' + euro(saving);
-      }
+      const result = amount * rate / 100;
+      if (!Number.isFinite(result)) { fail('Deze waarden zijn te groot om veilig te berekenen.'); return; }
+      $('result-label').textContent = fmt(rate) + '% van ' + fmt(amount) + ' is';
+      $('result-main').textContent = fmt(result);
+      $('result-detail').textContent = 'Berekening: ' + fmt(amount) + ' × ' + fmt(rate) + ' ÷ 100.';
+      lastCopy = fmt(result);
     } else if (tool === 'vat') {
       const rate = number($('rate').value);
       const mode = $('mode').value;
@@ -199,6 +253,7 @@
   }
   function reset() {
     $('tool-form').reset();
+    if (tool === 'discount') updateDiscountMode();
     $('error').textContent = '';
     $('result-label').textContent = 'Voorbeeldresultaat';
     $('result-main').textContent = 'Vul je gegevens in';
@@ -207,6 +262,8 @@
     lastCopy = '';
   }
   $('calculate').addEventListener('click', calculate);
+  $('discount-mode')?.addEventListener('change', updateDiscountMode);
+  if (tool === 'discount') updateDiscountMode();
   $('reset').addEventListener('click', reset);
   $('tool-form').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); calculate(); } });
   $('copy').addEventListener('click', async () => {
