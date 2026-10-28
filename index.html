@@ -2546,7 +2546,7 @@ button, a, input, select { touch-action: manipulation; }
             <select
                 id="language"
                 class="language-select"
-                aria-label="Select language"
+                aria-label="Select language" id="languageLabel"
                 onchange="changeLanguage()"
             >
                 <option value="en">English</option>
@@ -2600,10 +2600,10 @@ button, a, input, select { touch-action: manipulation; }
         </p>
 
         <div class="hero-actions">
-            <button class="hero-cta" type="button" onclick="document.querySelector('.calculator-grid')?.scrollIntoView({behavior:'smooth',block:'start'})">Explore calculators</button>
-            <button class="hero-cta secondary" type="button" onclick="document.querySelector('.search-box input')?.focus()">Search a calculator</button>
+            <button id="exploreAction" class="hero-cta" type="button" onclick="document.querySelector('.calculator-grid')?.scrollIntoView({behavior:'smooth',block:'start'})">Explore calculators</button>
+            <button id="searchAction" class="hero-cta secondary" type="button" onclick="document.querySelector('.search-box input')?.focus()">Search a calculator</button>
         </div>
-        <div class="hero-trust">Free to use · Fast results · No sign-up required</div>
+        <div class="hero-trust" id="heroTrust">Free to use · Fast results · No sign-up required</div>
 
     </section>
 
@@ -2662,42 +2662,42 @@ button, a, input, select { touch-action: manipulation; }
 <div class="categories">
 
     <button
-        class="category-btn active"
+        id="categoryAll" class="category-btn active"
         onclick="filterCategory('all', this)"
     >
         All
     </button>
 
     <button
-        class="category-btn"
+        id="categoryMoney" class="category-btn"
         onclick="filterCategory('money', this)"
     >
         Money
     </button>
 
     <button
-        class="category-btn"
+        id="categoryMath" class="category-btn"
         onclick="filterCategory('math', this)"
     >
         Math
     </button>
 
     <button
-        class="category-btn"
+        id="categoryLife" class="category-btn"
         onclick="filterCategory('life', this)"
     >
         Life
     </button>
 
     <button
-        class="category-btn"
+        id="categoryTime" class="category-btn"
         onclick="filterCategory('time', this)"
     >
         Time
     </button>
 
     <button
-        class="category-btn"
+        id="categoryHealth" class="category-btn"
         onclick="filterCategory('health', this)"
     >
         Health
@@ -2711,9 +2711,9 @@ button, a, input, select { touch-action: manipulation; }
      ===================================================== -->
 
 <!-- Prominent Dutch search-intent links for the main standalone calculators -->
-<section class="section dutch-tools-section" aria-labelledby="dutch-tools-title">
+<section class="section dutch-tools-section" aria-labelledby="popular-dutch-tools-title">
   <div class="section-title">
-    <h2 id="dutch-tools-title">Populaire Nederlandse calculators</h2>
+    <h2 id="popular-dutch-tools-title">Populaire Nederlandse calculators</h2>
     <p>Reken direct je schoolcijfer, korting, BTW, loon of tijd uit. Gratis en zonder account.</p>
   </div>
   <div class="dutch-tool-grid">
@@ -4049,7 +4049,7 @@ button, a, input, select { touch-action: manipulation; }
      FOOTER
      ===================================================== -->
 
-<section class="section" aria-labelledby="dutch-tools-title">
+<section class="section" aria-labelledby="popular-dutch-tools-title">
   <div class="section-title"><h2 id="dutch-tools-title">Nederlandse rekenhulpen</h2><p>Direct bruikbare calculators voor school, winkelen en BTW.</p></div>
   <nav class="footer-links" aria-label="Nederlandse calculators">
     <a class="footer-link" href="./cijfer-berekenen.html">Cijfer berekenen</a>
@@ -4144,6 +4144,20 @@ en: {
     step3Text: "Your answer appears instantly and can be copied.",
     faqTitle: "Frequently Asked Questions",
     footer: "Free online calculators made simple.",
+    stat1: "Calculators",
+    stat2: "Languages",
+    stat3: "Free",
+    explore: "Explore calculators",
+    searchAction: "Search a calculator",
+    trust: "Free to use · Fast results · No sign-up required",
+    categoryAll: "All",
+    categoryMoney: "Money",
+    categoryMath: "Math",
+    categoryLife: "Life",
+    categoryTime: "Time",
+    categoryHealth: "Health",
+    searchLabel: "Search calculators",
+    languageLabel: "Select language",
     faqFreeQ: "Is EasyCalc free?",
     faqFreeA: "Yes. EasyCalc provides free online calculators for everyday calculations.",
     faqRatesQ: "Does the currency converter use current exchange rates?",
@@ -4171,6 +4185,20 @@ tr: {
     step3Text: "Sonucun anında görünür ve kopyalanabilir.",
     faqTitle: "Sık Sorulan Sorular",
     footer: "Ücretsiz online hesaplayıcılar.",
+    stat1: "Hesaplayıcı",
+    stat2: "Dil",
+    stat3: "Ücretsiz",
+    explore: "Hesaplayıcıları keşfet",
+    searchAction: "Hesaplayıcı ara",
+    trust: "Ücretsiz · Hızlı sonuç · Kayıt gerekmez",
+    categoryAll: "Tümü",
+    categoryMoney: "Para",
+    categoryMath: "Matematik",
+    categoryLife: "Yaşam",
+    categoryTime: "Zaman",
+    categoryHealth: "Sağlık",
+    searchLabel: "Hesaplayıcı ara",
+    languageLabel: "Dil seç",
     faqFreeQ: "EasyCalc ücretsiz mi?",
     faqFreeA: "Evet. EasyCalc günlük hesaplamalar için ücretsiz çevrim içi hesaplayıcılar sunar.",
     faqRatesQ: "Döviz dönüştürücü güncel kurları kullanıyor mu?",
@@ -4198,6 +4226,20 @@ nl: {
     step3Text: "Je resultaat verschijnt direct en kan worden gekopieerd.",
     faqTitle: "Veelgestelde vragen",
     footer: "Gratis online calculators.",
+    stat1: "Calculators",
+    stat2: "Talen",
+    stat3: "Gratis",
+    explore: "Bekijk calculators",
+    searchAction: "Zoek een calculator",
+    trust: "Gratis te gebruiken · Direct resultaat · Geen account nodig",
+    categoryAll: "Alles",
+    categoryMoney: "Geld",
+    categoryMath: "Rekenen",
+    categoryLife: "Dagelijks",
+    categoryTime: "Tijd",
+    categoryHealth: "Gezondheid",
+    searchLabel: "Zoek calculators",
+    languageLabel: "Kies een taal",
     faqFreeQ: "Is EasyCalc gratis?",
     faqFreeA: "Ja. EasyCalc biedt gratis online calculators voor dagelijkse berekeningen.",
     faqRatesQ: "Gebruikt de valutaomrekenaar actuele wisselkoersen?",
@@ -4225,6 +4267,20 @@ de: {
     step3Text: "Dein Ergebnis erscheint sofort.",
     faqTitle: "Häufig gestellte Fragen",
     footer: "Kostenlose Online-Rechner.",
+    stat1: "Rechner",
+    stat2: "Sprachen",
+    stat3: "Kostenlos",
+    explore: "Rechner entdecken",
+    searchAction: "Rechner suchen",
+    trust: "Kostenlos · Schnelle Ergebnisse · Keine Anmeldung",
+    categoryAll: "Alle",
+    categoryMoney: "Geld",
+    categoryMath: "Mathe",
+    categoryLife: "Alltag",
+    categoryTime: "Zeit",
+    categoryHealth: "Gesundheit",
+    searchLabel: "Rechner suchen",
+    languageLabel: "Sprache wählen",
     faqFreeQ: "Ist EasyCalc kostenlos?",
     faqFreeA: "Ja. EasyCalc bietet kostenlose Online-Rechner für alltägliche Berechnungen.",
     faqRatesQ: "Verwendet der Währungsrechner aktuelle Wechselkurse?",
@@ -4252,6 +4308,20 @@ es: {
     step3Text: "Tu resultado aparece inmediatamente.",
     faqTitle: "Preguntas frecuentes",
     footer: "Calculadoras online gratuitas.",
+    stat1: "Calculadoras",
+    stat2: "Idiomas",
+    stat3: "Gratis",
+    explore: "Ver calculadoras",
+    searchAction: "Buscar calculadora",
+    trust: "Gratis · Resultados rápidos · Sin registro",
+    categoryAll: "Todas",
+    categoryMoney: "Dinero",
+    categoryMath: "Matemáticas",
+    categoryLife: "Vida diaria",
+    categoryTime: "Tiempo",
+    categoryHealth: "Salud",
+    searchLabel: "Buscar calculadoras",
+    languageLabel: "Elegir idioma",
     faqFreeQ: "¿EasyCalc es gratis?",
     faqFreeA: "Sí. EasyCalc ofrece calculadoras online gratuitas para cálculos cotidianos.",
     faqRatesQ: "¿El conversor de divisas usa tipos de cambio actuales?",
@@ -4279,6 +4349,20 @@ ru: {
     step3Text: "Результат появляется сразу.",
     faqTitle: "Часто задаваемые вопросы",
     footer: "Бесплатные онлайн-калькуляторы.",
+    stat1: "Калькуляторы",
+    stat2: "Языки",
+    stat3: "Бесплатно",
+    explore: "Все калькуляторы",
+    searchAction: "Найти калькулятор",
+    trust: "Бесплатно · Быстрый результат · Без регистрации",
+    categoryAll: "Все",
+    categoryMoney: "Деньги",
+    categoryMath: "Математика",
+    categoryLife: "Жизнь",
+    categoryTime: "Время",
+    categoryHealth: "Здоровье",
+    searchLabel: "Поиск калькуляторов",
+    languageLabel: "Выбрать язык",
     faqFreeQ: "EasyCalc бесплатен?",
     faqFreeA: "Да. EasyCalc предлагает бесплатные онлайн-калькуляторы для повседневных расчётов.",
     faqRatesQ: "Конвертер валют использует актуальные курсы?",
@@ -4367,6 +4451,21 @@ function changeLanguage() {
     document.getElementById("faqRatesA").textContent = t.faqRatesA;
     document.getElementById("faqPhoneQ").textContent = t.faqPhoneQ;
     document.getElementById("faqPhoneA").textContent = t.faqPhoneA;
+
+    document.getElementById("stat1").textContent = t.stat1;
+    document.getElementById("stat2").textContent = t.stat2;
+    document.getElementById("stat3").textContent = t.stat3;
+    document.getElementById("exploreAction").textContent = t.explore;
+    document.getElementById("searchAction").textContent = t.searchAction;
+    document.getElementById("heroTrust").textContent = t.trust;
+    document.getElementById("languageLabel").setAttribute("aria-label", t.languageLabel);
+    document.getElementById("search").setAttribute("aria-label", t.searchLabel);
+    document.getElementById("categoryAll").textContent = t.categoryAll;
+    document.getElementById("categoryMoney").textContent = t.categoryMoney;
+    document.getElementById("categoryMath").textContent = t.categoryMath;
+    document.getElementById("categoryLife").textContent = t.categoryLife;
+    document.getElementById("categoryTime").textContent = t.categoryTime;
+    document.getElementById("categoryHealth").textContent = t.categoryHealth;
 
     localStorage.setItem(
         "easycalcLanguage",
