@@ -309,11 +309,23 @@
     const isAverage = mode === 'average';
     averageTab.setAttribute('aria-selected', String(isAverage));
     neededTab.setAttribute('aria-selected', String(!isAverage));
+    averageTab.tabIndex = isAverage ? 0 : -1;
+    neededTab.tabIndex = isAverage ? -1 : 0;
     averagePanel.classList.toggle('hidden', !isAverage);
     neededPanel.classList.toggle('hidden', isAverage);
   }
   averageTab.addEventListener('click', () => setMode('average'));
   neededTab.addEventListener('click', () => setMode('needed'));
+  [averageTab, neededTab].forEach((tab, index, tabs) => {
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+      tabs[next].focus();
+      setMode(next === 0 ? 'average' : 'needed');
+    });
+  });
 
   function updateRows() {
     const rows = [...document.querySelectorAll('.grade-row')];
