@@ -40,7 +40,8 @@ Official tax references for the 2026 estimate: https://www.belastingdienst.nl/wp
 - [x] Automated tests cover weighted grades at 1 and 10, invalid grade >10, zero weight, required score below 1, exactly 10 and above 10.
 - [x] Automated tests cover inclusive/exclusive VAT, invalid stacked discounts, oversized breaks, and empty salary.
 - [ ] Manually verify maximum grade-row limits and keyboard behavior in a browser.
-- [ ] Add per-page unique title, meta description, canonical URL, H1 and internal links for each new calculator.
+- [x] Give all ten standalone calculator pages unique titles/descriptions/canonicals, one H1, and a link back to the homepage.
+- [x] Add related-calculator links between the ten pages to strengthen navigation and topical clusters.
 - [x] Add visible focus styling to the new calculator cards and language-aware accessible labels to homepage controls.
 - [ ] Manually verify keyboard tab order, focus after validation errors, screen-reader labels, and status announcements in a browser.
 - [ ] Run HTML validation and mobile checks at narrow viewport sizes before merging.
