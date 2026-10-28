@@ -9,7 +9,7 @@ These are candidate phrases based on the language used by Dutch calculator pages
 | Priority | Proposed page | Primary intent / focus query | Supporting variants | Why now |
 |---|---|---|---|---|
 | 1 | `cijfer-berekenen.html` | cijfer berekenen | gemiddelde cijfer berekenen, gewogen gemiddelde berekenen, welk cijfer moet ik halen | Existing page already serves the student task and can be improved without a new tool. |
-| 2 | `percentage-berekenen.html` | percentage berekenen | hoeveel procent is, percentage van een getal, procent verschil berekenen | Broad everyday use and relatively straightforward calculation logic. |
+| 2 | `percentage-berekenen.html` | percentage berekenen | hoeveel procent is, percentage van een getal, procentuele stijging, procentuele daling | Broad everyday use; one page now supports three distinct percentage intents without splitting near-duplicate pages. |
 | 3 | `korting-berekenen.html` | korting berekenen | prijs na korting, hoeveel korting, kortingspercentage berekenen | Competitors often provide reverse calculation and savings amount; include both. |
 | 4 | `btw-berekenen.html` | btw berekenen | btw terugrekenen, bedrag inclusief btw, bedrag exclusief btw, 9% btw, 21% btw | Clear Dutch tax intent; distinguish inclusive/exclusive input and rates. |
 | 5 | `uurloon-berekenen.html` | uurloon berekenen | uurloon naar maandloon, bruto uurloon, salaris per uur | Easier and safer first step than promising a precise net-pay calculation. |
