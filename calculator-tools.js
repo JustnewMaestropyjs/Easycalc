@@ -49,7 +49,7 @@
       $('result-main').textContent = euro(netMonthlyAverage);
       $('result-detail').textContent = 'Bruto jaarloon: ' + euro(annualGross) + ' · geschatte loonheffing na ' + (useCredits ? 'heffingskortingen' : 'zonder heffingskortingen') + ': ' + euro(taxAfterCredits) + ' per jaar. ' + (holidayIncluded ? 'Inclusief 8% vakantiegeld verdeeld over het jaar.' : 'Exclusief vakantiegeld.');
       lastCopy = 'Geschat netto gemiddeld per maand: ' + euro(netMonthlyAverage) + '\nGeschat bruto per jaar: ' + euro(annualGross) + '\nGeschatte loonheffing per jaar: ' + euro(taxAfterCredits);
-      $('error').textContent = 'Indicatie op basis van Nederlandse 2026-tarieven voor iemand onder de AOW-leeftijd met alleen loon uit werk. Pensioenpremie, andere inkomsten, persoonlijke omstandigheden en loonheffingstabellen kunnen het werkelijke nettoloon veranderen.';
+      $('error').textContent = '';
       return;
     }
     if (tool === 'weighted') {
