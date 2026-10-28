@@ -3967,9 +3967,7 @@ button, a, input, select { touch-action: manipulation; }
 
     <div class="faq-item">
 
-        <button
-            class="faq-question"
-            onclick="toggleFAQ(this)"
+        <button class="faq-question" aria-expanded="false" aria-controls="faqFreeA" onclick="toggleFAQ(this)"
         >
 
             <span id="faqFreeQ">
@@ -3993,9 +3991,7 @@ button, a, input, select { touch-action: manipulation; }
 
     <div class="faq-item">
 
-        <button
-            class="faq-question"
-            onclick="toggleFAQ(this)"
+        <button class="faq-question" aria-expanded="false" aria-controls="faqRatesA" onclick="toggleFAQ(this)"
         >
 
             <span id="faqRatesQ">
@@ -4019,9 +4015,7 @@ button, a, input, select { touch-action: manipulation; }
 
     <div class="faq-item">
 
-        <button
-            class="faq-question"
-            onclick="toggleFAQ(this)"
+        <button class="faq-question" aria-expanded="false" aria-controls="faqPhoneA" onclick="toggleFAQ(this)"
         >
 
             <span id="faqPhoneQ">
@@ -6368,9 +6362,8 @@ function toggleFAQ(button) {
     const item =
         button.parentElement;
 
-    item.classList.toggle(
-        "open"
-    );
+    item.classList.toggle("open");
+    button.setAttribute("aria-expanded", item.classList.contains("open") ? "true" : "false");
 
 }
 
