@@ -251,6 +251,21 @@
     if (field) field.focus();
   }
 
+  // Results describe the last calculation, not values edited afterwards.
+  function clearGradeResult(mode) {
+    $(mode + '-result').textContent = '–';
+    $(mode + '-note').textContent = 'Klik op berekenen voor je nieuwe resultaat.';
+    $(mode + '-error').textContent = '';
+  }
+  $('grade-rows').addEventListener('input', () => clearGradeResult('average'));
+  $('grade-rows').addEventListener('click', event => {
+    if (event.target.closest('.remove')) clearGradeResult('average');
+  });
+  $('add-grade').addEventListener('click', () => clearGradeResult('average'));
+  for (const id of ['current-grade', 'current-weight', 'target-grade', 'next-weight']) {
+    $(id).addEventListener('input', () => clearGradeResult('needed'));
+  }
+
   $('calc-average').addEventListener('click', () => {
     const rows = [...document.querySelectorAll('.grade-row')];
     let weightedTotal = 0, weightTotal = 0;
