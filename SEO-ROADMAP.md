@@ -19,12 +19,16 @@ These are candidate phrases based on the language used by Dutch calculator pages
 | 9 | `netto-bruto-indicatie.html` | bruto netto berekenen | netto salaris berekenen, salaris berekenen 2026 | High maintenance and financial accuracy risk; only launch with verified current-year Dutch tax tables and explicit assumptions. |
 | 10 | `bmi-berekenen.html` | bmi berekenen | BMI calculator | Common need, but health context requires careful interpretation; BMI for minors differs from adult BMI. |
 
+| 9 | `netto-bruto-indicatie.html` | netto-bruto salaris berekenen | netto salaris berekenen 2026 | bruto netto indicatie | Added with official 2026 rates; estimates are explicitly limited and must be checked annually. |
+
 ## Competitor feature review
 
 - **School grades:** Reken.nu's “Cijfer nodig berekenen” asks for current average, current weighting, target average and next-test weighting, and explains the formula. EasyCalc already supports these inputs; strengthen validation, copy/reset, edge-case handling and examples. Source: https://www.reken.nu/cijfer-nodig-berekenen/
 - **Discounts:** Rekenmaat and Notto show price after discount and amount saved. Rekenmaat also covers reverse-calculating a discount; Notto explains stacked discounts and VAT after discount. EasyCalc should provide these modes and cent rounding. Sources: https://rekenmaat.nl/korting-berekenen and https://notto.nl/tools/korting-berekenen
 - **Salary/hourly pay:** Reken.nu includes gross/net hourly pay, monthly equivalents, tax-credit and holiday-pay options. FNV offers gross-to-net guidance and highlights that payroll tax credit and pension deductions affect actual take-home pay. Start with transparent gross conversions; do not imply an exact net amount without maintained tax data. Sources: https://www.reken.nu/uurloon-berekenen/ and https://www.fnv.nl/werk-inkomen/salaris-loon/hoogte-van-het-loon
 - **BMI:** Voedingscentrum notes BMI alone does not tell the full health story and asks for age and other context. A generic adult-only interpretation would be insufficient for children/teens. Source: https://www.voedingscentrum.nl/bmi.aspx
+
+Official tax references for the 2026 estimate: https://www.belastingdienst.nl/wps/wcm/connect/nl/voorlopige-aanslag/content/voorlopige-aanslag-tarieven-en-heffingskortingen and https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/inkomstenbelasting/heffingskortingen_boxen_tarieven/boxen_en_tarieven/box_1/.
 
 ## Technical implementation checklist
 
