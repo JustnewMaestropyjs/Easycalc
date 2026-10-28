@@ -33,6 +33,21 @@
           : 'Vul de oorspronkelijke prijs en het kortingspercentage in om de nieuwe prijs en besparing te zien.';
     }
   }
+  function updatePercentageMode() {
+    const mode = $('percentage-mode')?.value || 'of';
+    const amountLabel = $('amount-label');
+    const rateLabel = $('rate-label');
+    const sub = document.querySelector('.panel .sub');
+    if (amountLabel) amountLabel.textContent = mode === 'share' ? 'Deel (A)' : mode === 'change' ? 'Oude waarde' : 'Getal';
+    if (rateLabel) rateLabel.textContent = mode === 'share' ? 'Totaal (B)' : mode === 'change' ? 'Nieuwe waarde' : 'Percentage (%)';
+    if (sub && tool === 'percentage') {
+      sub.textContent = mode === 'share'
+        ? 'Vul het deel en het totaal in. Het totaal moet groter zijn dan nul.'
+        : mode === 'change'
+          ? 'Vul de oude en nieuwe waarde in. De oude waarde moet groter zijn dan nul.'
+          : 'Vul een getal en het percentage in dat je wilt berekenen.';
+    }
+  }
   function calculate() {
     $('error').textContent = '';
     $('copy-status').textContent = '';
@@ -221,20 +236,51 @@
       return;
     }
     if (tool === 'percentage') {
+      const mode = $('percentage-mode')?.value || 'of';
       const rateField = $('rate');
-      const rate = number(rateField.value);
-      if (rateField.value.trim() === '' || !Number.isFinite(rate) || rate < 0 || rate > 1000000) {
-        fail('Vul een geldig percentage van 0 tot en met 1.000.000 in.');
+      const second = number(rateField.value);
+      if (rateField.value.trim() === '' || !Number.isFinite(second) || second < 0 || second > 1e12) {
+        fail('Vul een geldige tweede waarde van 0 of hoger in.');
         rateField.focus();
         return;
       }
-      const result = amount * rate / 100;
+      let result, label, detail;
+      if (mode === 'share') {
+        if (second === 0) {
+          fail('Het totaal moet groter zijn dan 0 om een percentage te berekenen.');
+          rateField.focus();
+          return;
+        }
+        result = amount / second * 100;
+        label = fmt(amount) + ' van ' + fmt(second) + ' is';
+        detail = 'Berekening: ' + fmt(amount) + ' ÷ ' + fmt(second) + ' × 100.';
+      } else if (mode === 'change') {
+        if (amount === 0) {
+          fail('De oude waarde moet groter zijn dan 0 om procentuele verandering te berekenen.');
+          $('amount').focus();
+          return;
+        }
+        result = (second - amount) / amount * 100;
+        label = 'Procentuele verandering';
+        detail = 'Van ' + fmt(amount) + ' naar ' + fmt(second) + ': ' + (result > 0 ? 'stijging' : result < 0 ? 'daling' : 'geen verandering') + '.';
+      } else {
+        if (second > 1000000) {
+          fail('Vul een percentage tussen 0 en 1.000.000 in.');
+          rateField.focus();
+          return;
+        }
+        result = amount * second / 100;
+        label = fmt(second) + '% van ' + fmt(amount) + ' is';
+        detail = 'Berekening: ' + fmt(amount) + ' × ' + fmt(second) + ' ÷ 100.';
+      }
       if (!Number.isFinite(result)) { fail('Deze waarden zijn te groot om veilig te berekenen.'); return; }
-      $('result-label').textContent = fmt(rate) + '% van ' + fmt(amount) + ' is';
-      $('result-main').textContent = fmt(result);
-      $('result-detail').textContent = 'Berekening: ' + fmt(amount) + ' × ' + fmt(rate) + ' ÷ 100.';
-      lastCopy = fmt(result);
-    } else if (tool === 'vat') {
+      $('result-label').textContent = label;
+      $('result-main').textContent = fmt(result) + (mode === 'of' ? '' : '%');
+      $('result-detail').textContent = detail;
+      lastCopy = $('result-main').textContent;
+      return;
+    }
+    if (tool === 'vat') {
       const rate = number($('rate').value);
       const mode = $('mode').value;
       if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
@@ -254,6 +300,7 @@
   function reset() {
     $('tool-form').reset();
     if (tool === 'discount') updateDiscountMode();
+    if (tool === 'percentage') updatePercentageMode();
     $('error').textContent = '';
     $('result-label').textContent = 'Voorbeeldresultaat';
     $('result-main').textContent = 'Vul je gegevens in';
@@ -262,6 +309,8 @@
     lastCopy = '';
   }
   $('calculate').addEventListener('click', calculate);
+  $('percentage-mode')?.addEventListener('change', updatePercentageMode);
+  if (tool === 'percentage') updatePercentageMode();
   $('discount-mode')?.addEventListener('change', updateDiscountMode);
   if (tool === 'discount') updateDiscountMode();
   $('reset').addEventListener('click', reset);
