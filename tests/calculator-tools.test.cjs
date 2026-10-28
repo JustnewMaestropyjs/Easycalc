@@ -173,3 +173,65 @@ test('net pay estimate returns a labeled estimate for a typical monthly salary',
   assert.match(app.element('result-main').textContent, /€/);
   assert.equal(app.element('error').textContent, '');
 });
+
+test('weighted average rejects a zero weight', () => {
+  const app = createCalculator('weighted', {}, [{ grade: '7', weight: '0' }]);
+  app.calculate();
+  assert.match(app.element('error').textContent, /weging moet groter zijn dan 0/i);
+});
+
+test('weighted average accepts boundary grades 1 and 10', () => {
+  const app = createCalculator('weighted', {}, [
+    { grade: '1', weight: '1' },
+    { grade: '10', weight: '1' },
+  ]);
+  app.calculate();
+  assert.equal(app.element('result-main').textContent, '5,5');
+});
+
+test('weighted average rejects a grade above 10', () => {
+  const app = createCalculator('weighted', {}, [{ grade: '10,1', weight: '1' }]);
+  app.calculate();
+  assert.match(app.element('error').textContent, /tussen 1 en 10/i);
+});
+
+test('required grade below 1 is reported as 1 or higher', () => {
+  const app = createCalculator('needed', {
+    'current-grade': '9', 'current-weight': '4', 'target-grade': '7', 'next-weight': '1',
+  });
+  app.calculate();
+  assert.equal(app.element('result-main').textContent, '1,00 of hoger');
+});
+
+test('required grade exactly 10 remains achievable', () => {
+  const app = createCalculator('needed', {
+    'current-grade': '6', 'current-weight': '1', 'target-grade': '8', 'next-weight': '1',
+  });
+  app.calculate();
+  assert.equal(app.element('result-main').textContent, '10');
+});
+
+test('VAT inclusive mode extracts 21% VAT from €121', () => {
+  const app = createCalculator('vat', { amount: '121', rate: '21', mode: 'inclusive' });
+  app.calculate();
+  assert.match(app.element('result-main').textContent, /100,00/);
+  assert.match(app.element('result-detail').textContent, /21,00/);
+});
+
+test('stacked discount rejects a second rate above 100%', () => {
+  const app = createCalculator('discount', { 'discount-mode': 'stacked', amount: '100', rate: '20', rate2: '101' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /tweede kortingspercentage tussen 0 en 100/i);
+});
+
+test('time calculator rejects a break longer than the shift', () => {
+  const app = createCalculator('time', { start: '09:00', end: '10:00', pause: '61' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /pauze kan niet langer/i);
+});
+
+test('net pay estimate rejects an empty salary', () => {
+  const app = createCalculator('net', { salary: '', credits: true, holiday: false });
+  app.calculate();
+  assert.match(app.element('error').textContent, /geldig bruto maandloon/i);
+});

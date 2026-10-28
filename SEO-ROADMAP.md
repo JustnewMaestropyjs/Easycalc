@@ -37,12 +37,16 @@ Official tax references for the 2026 estimate: https://www.belastingdienst.nl/wp
 - [x] Test blank, malformed, out-of-range and decimal-comma inputs in shared calculator logic.
 - [x] Set the homepage to apply the selected language on first render, translate its main controls and FAQs, and match Dutch FAQ structured data to the visible Dutch answers.
 - [x] Add a prominent responsive grid of ten dedicated Dutch calculator links near the top of the homepage.
-- [ ] Test grade calculation boundaries: exactly 1, exactly 10, required score below 1, exactly 1, exactly 10, above 10; zero/negative weights and maximum rows.
+- [x] Automated tests cover weighted grades at 1 and 10, invalid grade >10, zero weight, required score below 1, exactly 10 and above 10.
+- [x] Automated tests cover inclusive/exclusive VAT, invalid stacked discounts, oversized breaks, and empty salary.
+- [ ] Manually verify maximum grade-row limits and keyboard behavior in a browser.
 - [ ] Add per-page unique title, meta description, canonical URL, H1 and internal links for each new calculator.
 - [x] Add visible focus styling to the new calculator cards and language-aware accessible labels to homepage controls.
 - [ ] Manually verify keyboard tab order, focus after validation errors, screen-reader labels, and status announcements in a browser.
 - [ ] Run HTML validation and mobile checks at narrow viewport sizes before merging.
 - [ ] After deploy, inspect Search Console queries and pages; use actual data to reorder this roadmap.
+
+A dependency-free Node.js regression suite now runs in GitHub Actions for pushes and pull requests. It exercises percentage modes, discount modes, weighted grades, required grades, overnight time, VAT, hourly wage, BMI validation and the net-pay estimate.
 
 ## Simplification opportunities
 
