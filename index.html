@@ -5505,6 +5505,19 @@ function reverseCalc() {
 
 let currencyRequestId = 0;
 
+function invalidateCurrencyResult() {
+    currencyRequestId++;
+    for (const id of ["currencyResult", "currencyCopy", "rateInfo"]) {
+        const element = document.getElementById(id);
+        if (element) element.style.display = "none";
+    }
+}
+
+for (const id of ["currencyAmount", "currencyFrom", "currencyTo"]) {
+    const element = document.getElementById(id);
+    if (element) element.addEventListener(id === "currencyAmount" ? "input" : "change", invalidateCurrencyResult);
+}
+
 async function currencyCalc() {
 
     const requestId = ++currencyRequestId;
@@ -5636,10 +5649,7 @@ async function currencyCalc() {
 function swapCurrencies() {
 
     // Invalidate any conversion started before the currency pair changed.
-    currencyRequestId++;
-    document.getElementById("currencyResult").style.display = "none";
-    document.getElementById("currencyCopy").style.display = "none";
-    document.getElementById("rateInfo").style.display = "none";
+    invalidateCurrencyResult();
 
     const from =
         document.getElementById(
