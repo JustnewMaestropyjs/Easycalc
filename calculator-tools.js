@@ -21,6 +21,37 @@
   function calculate() {
     $('error').textContent = '';
     $('copy-status').textContent = '';
+    if (tool === 'net') {
+      const salary = number($('salary').value);
+      if ($('salary').value.trim() === '' || !Number.isFinite(salary) || salary < 0 || salary > 1000000) {
+        fail('Vul een geldig bruto maandloon in tussen € 0 en € 1.000.000.');
+        $('salary').focus();
+        return;
+      }
+      const holidayIncluded = $('holiday').checked;
+      const useCredits = $('credits').checked;
+      const annualGross = salary * 12 * (holidayIncluded ? 1.08 : 1);
+      const tax = Math.min(annualGross, 38883) * 0.3575
+        + Math.max(0, Math.min(annualGross - 38883, 39543)) * 0.3756
+        + Math.max(0, annualGross - 78426) * 0.495;
+      const generalCredit = annualGross <= 29736 ? 3115
+        : annualGross < 78426 ? Math.max(0, 3115 - 0.06398 * (annualGross - 29736)) : 0;
+      let laborCredit = 0;
+      if (annualGross <= 11965) laborCredit = annualGross * 0.08324;
+      else if (annualGross <= 25845) laborCredit = 996 + 0.31009 * (annualGross - 11965);
+      else if (annualGross <= 45592) laborCredit = 5300 + 0.0195 * (annualGross - 25845);
+      else if (annualGross < 132920) laborCredit = Math.max(0, 5685 - 0.06510 * (annualGross - 45592));
+      const credits = useCredits ? generalCredit + laborCredit : 0;
+      const taxAfterCredits = Math.max(0, tax - credits);
+      const netAnnual = Math.max(0, annualGross - taxAfterCredits);
+      const netMonthlyAverage = netAnnual / 12;
+      $('result-label').textContent = 'Geschat gemiddeld nettoloon per maand';
+      $('result-main').textContent = euro(netMonthlyAverage);
+      $('result-detail').textContent = 'Bruto jaarloon: ' + euro(annualGross) + ' · geschatte loonheffing na ' + (useCredits ? 'heffingskortingen' : 'zonder heffingskortingen') + ': ' + euro(taxAfterCredits) + ' per jaar. ' + (holidayIncluded ? 'Inclusief 8% vakantiegeld verdeeld over het jaar.' : 'Exclusief vakantiegeld.');
+      lastCopy = 'Geschat netto gemiddeld per maand: ' + euro(netMonthlyAverage) + '\nGeschat bruto per jaar: ' + euro(annualGross) + '\nGeschatte loonheffing per jaar: ' + euro(taxAfterCredits);
+      $('error').textContent = '';
+      return;
+    }
     if (tool === 'weighted') {
       const rows = [...document.querySelectorAll('.grade-row')];
       if (!rows.length) { fail('Voeg minimaal één cijfer toe.'); return; }
