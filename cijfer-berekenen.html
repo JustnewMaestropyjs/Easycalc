@@ -225,6 +225,7 @@
         <div class="actions">
           <button class="btn btn-secondary" id="add-grade" type="button">+ Cijfer toevoegen</button>
           <button class="btn" id="calc-average" type="button">Bereken gemiddelde</button>
+          <button class="btn btn-secondary" id="reset-average" type="button">Reset</button>
         </div>
         <div class="result" aria-live="polite" aria-atomic="true">
           <div class="result-label">Je gewogen gemiddelde</div>
@@ -243,7 +244,7 @@
         <input id="target-grade" type="number" min="1" max="10" step="0.1" value="7" inputmode="decimal">
         <label class="field-label" for="next-weight">Weging van de volgende toets</label>
         <input id="next-weight" type="number" min="0.1" max="100" step="0.1" value="1" inputmode="decimal">
-        <div class="actions"><button class="btn" id="calc-needed" type="button">Bereken benodigd cijfer</button></div>
+        <div class="actions"><button class="btn" id="calc-needed" type="button">Bereken benodigd cijfer</button><button class="btn btn-secondary" id="reset-needed" type="button">Reset</button></div>
         <div class="result" aria-live="polite" aria-atomic="true">
           <div class="result-label">Cijfer dat je nodig hebt</div>
           <div class="result-number" id="needed-result">8,00</div>
@@ -308,11 +309,23 @@
     const isAverage = mode === 'average';
     averageTab.setAttribute('aria-selected', String(isAverage));
     neededTab.setAttribute('aria-selected', String(!isAverage));
+    averageTab.tabIndex = isAverage ? 0 : -1;
+    neededTab.tabIndex = isAverage ? -1 : 0;
     averagePanel.classList.toggle('hidden', !isAverage);
     neededPanel.classList.toggle('hidden', isAverage);
   }
   averageTab.addEventListener('click', () => setMode('average'));
   neededTab.addEventListener('click', () => setMode('needed'));
+  [averageTab, neededTab].forEach((tab, index, tabs) => {
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+      tabs[next].focus();
+      setMode(next === 0 ? 'average' : 'needed');
+    });
+  });
 
   function updateRows() {
     const rows = [...document.querySelectorAll('.grade-row')];
@@ -342,6 +355,37 @@
     row.querySelector('.grade-input').focus();
     $('average-error').textContent = '';
   });
+
+  async function copyResult(mode) {
+    const result = $(mode + '-result').textContent.trim();
+    const status = $(mode + '-status');
+    if (!result || result === '–') {
+      status.textContent = 'Bereken eerst een resultaat.';
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(result);
+      status.textContent = 'Resultaat gekopieerd.';
+    } catch (error) {
+      const helper = document.createElement('textarea');
+      helper.value = result;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      const copied = document.execCommand('copy');
+      helper.remove();
+      status.textContent = copied ? 'Resultaat gekopieerd.' : 'Kopiëren is niet gelukt. Selecteer het resultaat handmatig.';
+    }
+  }
+  $('copy-average').addEventListener('click', () => copyResult('average'));
+  $('copy-needed').addEventListener('click', () => copyResult('needed'));
+  // IDs are kept explicit so status messages are announced accessibly.
+  $('copy-average').setAttribute('aria-describedby', 'copy-average-status');
+  $('copy-needed').setAttribute('aria-describedby', 'copy-needed-status');
+  // The helper resolves the status element by this alias.
+  const originalCopyStatus = (mode) => $(mode + '-copy-status');
 
   function invalidateGradeResult(mode, message, field) {
     $(mode + '-error').textContent = message;
@@ -431,6 +475,29 @@
       $('needed-note').textContent = 'Minimaal benodigd cijfer op twee decimalen, zonder naar beneden af te ronden. Je school kan andere afrondingsregels hanteren.';
     }
   });
+
+  $('reset-average').addEventListener('click', () => {
+    const rows = [...document.querySelectorAll('.grade-row')];
+    rows.slice(2).forEach(row => row.remove());
+    const remaining = [...document.querySelectorAll('.grade-row')];
+    const defaults = [[ '7.0', '1' ], [ '8.0', '1' ]];
+    remaining.forEach((row, index) => {
+      row.querySelector('.grade-input').value = defaults[index][0];
+      row.querySelector('.weight-input').value = defaults[index][1];
+    });
+    updateRows();
+    $('average-status').textContent = '';
+    $('calc-average').click();
+  });
+  $('reset-needed').addEventListener('click', () => {
+    $('current-grade').value = '6.5';
+    $('current-weight').value = '2';
+    $('target-grade').value = '7';
+    $('next-weight').value = '1';
+    $('needed-status').textContent = '';
+    $('calc-needed').click();
+  });
+
   updateRows();
   $('calc-average').click();
   $('calc-needed').click();
