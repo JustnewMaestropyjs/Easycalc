@@ -34,10 +34,13 @@ Official tax references for the 2026 estimate: https://www.belastingdienst.nl/wp
 - [x] Keep visible keyboard focus and minimum touch targets.
 - [x] Reduce decorative motion while preserving reduced-motion support.
 - [x] Add reset and copy-result controls to the grade calculator.
-- [ ] Test blank, malformed, out-of-range and decimal-comma inputs.
+- [x] Test blank, malformed, out-of-range and decimal-comma inputs in shared calculator logic.
+- [x] Set the homepage to apply the selected language on first render, translate its main controls and FAQs, and match Dutch FAQ structured data to the visible Dutch answers.
+- [x] Add a prominent responsive grid of ten dedicated Dutch calculator links near the top of the homepage.
 - [ ] Test grade calculation boundaries: exactly 1, exactly 10, required score below 1, exactly 1, exactly 10, above 10; zero/negative weights and maximum rows.
 - [ ] Add per-page unique title, meta description, canonical URL, H1 and internal links for each new calculator.
-- [ ] Verify keyboard tab order, focus after validation errors, screen-reader labels, and status announcements.
+- [x] Add visible focus styling to the new calculator cards and language-aware accessible labels to homepage controls.
+- [ ] Manually verify keyboard tab order, focus after validation errors, screen-reader labels, and status announcements in a browser.
 - [ ] Run HTML validation and mobile checks at narrow viewport sizes before merging.
 - [ ] After deploy, inspect Search Console queries and pages; use actual data to reorder this roadmap.
 
