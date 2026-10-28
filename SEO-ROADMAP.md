@@ -16,10 +16,8 @@ These are candidate phrases based on the language used by Dutch calculator pages
 | 6 | `tijd-berekenen.html` | tijd berekenen | uren optellen, tijdsduur berekenen, minuten naar uren | Simple implementation; add overnight and multi-day edge cases. |
 | 7 | `gewogen-gemiddelde.html` | gewogen gemiddelde berekenen | gemiddelde met weging, gewogen cijfer | Closely related to school intent; consider keeping on the existing grade page if intent overlaps. |
 | 8 | `benodigd-cijfer.html` | welk cijfer moet ik halen | benodigd cijfer berekenen, cijfer nodig voor gemiddelde | A distinct task and a known competitor page type; may be a section/anchor on the grade page first. |
-| 9 | `netto-bruto-indicatie.html` | bruto netto berekenen | netto salaris berekenen, salaris berekenen 2026 | High maintenance and financial accuracy risk; only launch with verified current-year Dutch tax tables and explicit assumptions. |
+| 9 | `netto-bruto-indicatie.html` | netto-bruto salaris berekenen | netto salaris berekenen 2026, bruto netto indicatie | Live as a clearly limited estimate using official 2026 rates; verify rates annually and avoid promising an exact payslip result. |
 | 10 | `bmi-berekenen.html` | bmi berekenen | BMI calculator | Common need, but health context requires careful interpretation; BMI for minors differs from adult BMI. |
-
-| 9 | `netto-bruto-indicatie.html` | netto-bruto salaris berekenen | netto salaris berekenen 2026 | bruto netto indicatie | Added with official 2026 rates; estimates are explicitly limited and must be checked annually. |
 
 ## Competitor feature review
 
