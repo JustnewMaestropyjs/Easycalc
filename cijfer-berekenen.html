@@ -359,6 +359,7 @@ footer a{color:#a9d8c6}
     row.innerHTML = '<div><label>Cijfer</label><input class="grade-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Bijv. 7,5"></div><div><label>Weging</label><input class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1"></div><button class="remove" type="button" aria-label="Verwijder cijfer">×</button>';
     $('grade-rows').appendChild(row);
     updateRows();
+    clearGradeResult('average');
     row.querySelector('.grade-input').focus();
     $('average-error').textContent = '';
   });
@@ -414,7 +415,6 @@ footer a{color:#a9d8c6}
   $('grade-rows').addEventListener('click', event => {
     if (event.target.closest('.remove')) clearGradeResult('average');
   });
-  $('add-grade').addEventListener('click', () => clearGradeResult('average'));
   for (const id of ['current-grade', 'current-weight', 'target-grade', 'next-weight']) {
     $(id).addEventListener('input', () => clearGradeResult('needed'));
   }
