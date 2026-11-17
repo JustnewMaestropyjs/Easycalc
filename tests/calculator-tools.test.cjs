@@ -344,3 +344,38 @@ test('reset controls use buttons instead of triggering a second native form rese
     assert.doesNotMatch(html, /id="reset" type="reset"/, file + ' still has a double-reset control');
   }
 });
+
+
+test('every calculator page includes the controls required by its calculator logic', () => {
+  const required = {
+    'percentage-berekenen.html': ['tool-form','percentage-mode','amount','rate','amount-label','rate-label','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'korting-berekenen.html': ['tool-form','discount-mode','amount','rate','rate2-field','rate2','amount-label','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'btw-berekenen.html': ['tool-form','amount','rate','mode','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'gewogen-gemiddelde.html': ['tool-form','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'benodigd-cijfer.html': ['tool-form','current-grade','current-weight','target-grade','next-weight','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'uurloon-berekenen.html': ['tool-form','amount','hours','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'netto-bruto-indicatie.html': ['tool-form','salary','credits','holiday','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'tijd-berekenen.html': ['tool-form','start','end','pause','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+    'bmi-berekenen.html': ['tool-form','height','weight','calculate','reset','copy','copy-status','error','result-label','result-main','result-detail'],
+  };
+  for (const [file, expected] of Object.entries(required)) {
+    const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
+    const ids = new Set([...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]));
+    for (const id of expected) assert.equal(ids.has(id), true, file + ' is missing #' + id);
+  }
+});
+
+test('all calculator pages are listed in the XML sitemap', () => {
+  const sitemap = fs.readFileSync(path.join(siteRoot, 'sitemap.xml'), 'utf8');
+  for (const file of calculatorPages) {
+    if (file === 'index.html') continue;
+    assert.ok(sitemap.includes(file), 'sitemap is missing ' + file);
+  }
+});
+
+test('grade calculator accepts decimal-comma text fields rather than browser-sanitized number inputs', () => {
+  const html = fs.readFileSync(path.join(siteRoot, 'cijfer-berekenen.html'), 'utf8');
+  assert.doesNotMatch(html, /<input[^>]*type="number"/);
+  assert.match(html, /const parseDecimal = .*replace\\(',', '\\.'\\)/);
+  assert.match(html, /id="grade-1"[^>]*type="text"[^>]*inputmode="decimal"/);
+});
