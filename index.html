@@ -2466,7 +2466,7 @@ footer {border-top:1px solid var(--border)}
   box-shadow: 0 5px 18px rgba(20,18,12,.12);
 }
 .stats .stat strong {
-  color: #f0d18a !important;
+  color: #a9d8c6 !important;
   font-variant-numeric: tabular-nums;
 }
 .stats .stat span {
@@ -2483,7 +2483,7 @@ button, a, input, select { touch-action: manipulation; }
 .language-select { min-height: 44px; color: var(--text); }
 .language-select option { background: #fffdf8; color: #201f1a; }
 :focus-visible {
-  outline: 3px solid #c9a75f !important;
+  outline: 3px solid #6c9eac !important;
   outline-offset: 3px;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -2736,6 +2736,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 /* Final brand guard: keep legacy selectors from reintroducing purple or gold accents. */
+.stats .stat{background:var(--card)!important;color:var(--text)!important;border:1px solid var(--border)!important;box-shadow:var(--shadow-sm)!important}
+.stats .stat strong{color:var(--primary)!important}
+.stats .stat span{color:var(--text-secondary)!important}
+:focus-visible{outline:3px solid rgba(91,158,170,.48)!important;outline-offset:3px}
+.language-select option{background:#fff;color:#1d302c}
+.hero-cta{background:#287b63;color:#fff;border:1px solid #287b63;box-shadow:none}
+.hero-cta:hover{background:#1f654f}
+.hero-cta.secondary{background:#e8f1f5;color:#356f85;border-color:#d3e4eb}
+.hero-cta.secondary:hover{background:#dcebf1}
+
 .favorite:hover,.favorite.active { color:#477f9b; }
 .card:nth-child(4n+3) .card-icon { background:#edf2f8; color:#657da8; }
 body.dark .card:nth-child(4n+3) .card-icon { background:rgba(127,146,190,.15); color:#b2c0e2; }
