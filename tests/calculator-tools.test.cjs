@@ -293,7 +293,7 @@ const calculatorPages = [
 test('all site pages have unique HTML ids and all local file links resolve', () => {
   for (const file of calculatorPages) {
     const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
-    const ids = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+    const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
     assert.equal(new Set(ids).size, ids.length, file + ' contains duplicate IDs');
     const links = [...html.matchAll(/(?:href|src)=["']([^"']+)["']/g)].map(match => match[1]);
     for (const href of links) {
@@ -307,16 +307,16 @@ test('all site pages have unique HTML ids and all local file links resolve', () 
 
 test('grade calculator contains every element referenced by its inline script', () => {
   const html = fs.readFileSync(path.join(siteRoot, 'cijfer-berekenen.html'), 'utf8');
-  const ids = new Set([...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]));
-  const references = [...html.matchAll(/\\$\\('([^']+)'\\)/g)].map(match => match[1]);
+  const ids = new Set([...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]));
+  const references = [...html.matchAll(/\$\('([^']+)'\)/g)].map(match => match[1]);
   for (const id of references) assert.equal(ids.has(id), true, 'grade calculator references missing #' + id);
 });
 
 test('grade calculator has visible input text, soft input surfaces and a three-column grade row', () => {
   const html = fs.readFileSync(path.join(siteRoot, 'cijfer-berekenen.html'), 'utf8');
-  assert.match(html, /#average-panel input,#needed-panel input,.grade-row input[\\s\\S]*?color:#1d302c!important/);
+  assert.match(html, /#average-panel input,#needed-panel input,.grade-row input[\s\S]*?color:#1d302c!important/);
   assert.match(html, /background:#f8fbf9!important/);
-  assert.match(html, /grid-template-columns:minmax\\(0,1fr\\) 105px 40px/);
+  assert.match(html, /grid-template-columns:minmax\(0,1fr\) 105px 40px/);
   assert.match(html, /id="copy-average"/);
   assert.match(html, /id="copy-needed"/);
   assert.match(html, /id="average-status"/);
@@ -326,14 +326,14 @@ test('grade calculator has visible input text, soft input surfaces and a three-c
 test('all standalone calculator pages load the shared calculator stylesheet and script', () => {
   for (const file of calculatorPages.filter(file => file !== 'index.html' && file !== 'cijfer-berekenen.html')) {
     const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
-    assert.match(html, /href="\\.\\/calculator-tools\\.css"/, file + ' is missing shared CSS');
-    assert.match(html, /src="\\.\\/calculator-tools\\.js"/, file + ' is missing calculator JS');
+    assert.match(html, /href="\.\/calculator-tools\.css"/, file + ' is missing shared CSS');
+    assert.match(html, /src="\.\/calculator-tools\.js"/, file + ' is missing calculator JS');
   }
 });
 
 test('discount page does not repeat the same related calculator link', () => {
   const html = fs.readFileSync(path.join(siteRoot, 'korting-berekenen.html'), 'utf8');
-  const nav = html.match(/<nav class="related-links"[\\s\\S]*?<\\/nav>/)?.[0] || '';
+  const nav = html.match(/<nav class="related-links"[\s\S]*?<\/nav>/)?.[0] || '';
   const links = [...nav.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(links).size, links.length);
 });
