@@ -14,6 +14,7 @@
   const fmt = n => new Intl.NumberFormat('nl-NL', {maximumFractionDigits:4}).format(n);
   const fail = message => {
     $('error').textContent = message;
+    $('result-label').textContent = 'Voorbeeldresultaat';
     $('result-main').textContent = 'Vul je gegevens in';
     $('result-detail').textContent = '';
     lastCopy = '';
@@ -338,5 +339,14 @@
       $('copy-status').textContent = ok ? 'Resultaat gekopieerd.' : 'Kopiëren lukte niet. Selecteer het resultaat handmatig.';
     }
   });
-  $('tool-form').addEventListener('input', () => { $('error').textContent = ''; $('copy-status').textContent = ''; lastCopy = ''; });
+  const clearStaleResult = () => {
+    $('error').textContent = '';
+    $('copy-status').textContent = '';
+    $('result-label').textContent = 'Voorbeeldresultaat';
+    $('result-main').textContent = 'Vul je gegevens in';
+    $('result-detail').textContent = '';
+    lastCopy = '';
+  };
+  $('tool-form').addEventListener('input', clearStaleResult);
+  $('tool-form').addEventListener('change', clearStaleResult);
 })();
