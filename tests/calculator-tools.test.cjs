@@ -235,3 +235,28 @@ test('net pay estimate rejects an empty salary', () => {
   app.calculate();
   assert.match(app.element('error').textContent, /geldig bruto maandloon/i);
 });
+
+
+test('hourly wage rejects values that overflow the calculation', () => {
+  const app = createCalculator('hourly', { amount: '1e308', hours: '168' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /te hoog om veilig te berekenen/i);
+});
+
+test('VAT rejects values that overflow the total', () => {
+  const app = createCalculator('vat', { amount: '1e308', rate: '100', mode: 'exclusive' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /te hoog om veilig te berekenen/i);
+});
+
+test('reverse discount rejects an unrepresentable original price', () => {
+  const app = createCalculator('discount', { 'discount-mode': 'reverse', amount: '1e308', rate: '99.99' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /te groot om veilig te berekenen/i);
+});
+
+test('VAT rejects a missing percentage instead of treating it as zero', () => {
+  const app = createCalculator('vat', { amount: '100', rate: '', mode: 'exclusive' });
+  app.calculate();
+  assert.match(app.element('error').textContent, /geldig BTW-percentage/i);
+});

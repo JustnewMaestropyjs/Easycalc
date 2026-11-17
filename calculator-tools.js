@@ -138,6 +138,11 @@
       if (!Number.isFinite(wage) || wage < 0 || $('amount').value.trim() === '') { fail('Vul een geldig bruto uurloon van 0 of hoger in.'); $('amount').focus(); return; }
       if (!Number.isFinite(hours) || hours <= 0 || hours > 168 || $('hours').value.trim() === '') { fail('Vul uren per week in tussen 0 en 168.'); $('hours').focus(); return; }
       const week = wage * hours, month = wage * hours * 52 / 12, year = wage * hours * 52;
+      if (![week, month, year].every(Number.isFinite)) {
+        fail('Dit uurloon is te hoog om veilig te berekenen.');
+        $('amount').focus();
+        return;
+      }
       $('result-label').textContent = 'Bruto salaris bij ' + fmt(hours) + ' uur per week';
       $('result-main').textContent = euro(month) + ' per maand';
       $('result-detail').textContent = 'Per week: ' + euro(week) + ' · Per jaar: ' + euro(year) + '. Exclusief vakantiegeld, toeslagen en inhoudingen.';
@@ -291,6 +296,11 @@
       let base, vat, total;
       if (mode === 'exclusive') { base = amount; vat = base * rate / 100; total = base + vat; }
       else { total = amount; base = total / (1 + rate / 100); vat = total - base; }
+      if (![base, vat, total].every(Number.isFinite)) {
+        fail('Dit bedrag is te hoog om veilig te berekenen.');
+        amountField.focus();
+        return;
+      }
       $('result-label').textContent = mode === 'exclusive' ? 'Bedrag inclusief BTW' : 'Bedrag exclusief BTW';
       $('result-main').textContent = euro(mode === 'exclusive' ? total : base);
       $('result-detail').textContent = 'BTW (' + fmt(rate) + '%): ' + euro(vat) + ' · Exclusief: ' + euro(base) + ' · Inclusief: ' + euro(total) + '.';
