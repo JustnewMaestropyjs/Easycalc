@@ -205,13 +205,13 @@ footer a{color:#a9d8c6}
         <p class="sub">Geef elk cijfer een weging. Een toets die 2 keer meetelt krijgt weging 2.</p>
         <div id="grade-rows">
           <div class="grade-row">
-            <div><label for="grade-1">Cijfer 1</label><input id="grade-1" class="grade-input" type="text" inputmode="decimal" autocomplete="off" value="7.0" inputmode="decimal"></div>
-            <div><label for="weight-1">Weging</label><input id="weight-1" class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1" inputmode="decimal"></div>
+            <div><label for="grade-1">Cijfer 1</label><input id="grade-1" class="grade-input" type="text" inputmode="decimal" autocomplete="off" value="7.0"></div>
+            <div><label for="weight-1">Weging</label><input id="weight-1" class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1"></div>
             <button class="remove" type="button" aria-label="Verwijder cijfer 1" disabled>×</button>
           </div>
           <div class="grade-row">
-            <div><label for="grade-2">Cijfer 2</label><input id="grade-2" class="grade-input" type="text" inputmode="decimal" autocomplete="off" value="8.0" inputmode="decimal"></div>
-            <div><label for="weight-2">Weging</label><input id="weight-2" class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1" inputmode="decimal"></div>
+            <div><label for="grade-2">Cijfer 2</label><input id="grade-2" class="grade-input" type="text" inputmode="decimal" autocomplete="off" value="8.0"></div>
+            <div><label for="weight-2">Weging</label><input id="weight-2" class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1"></div>
             <button class="remove" type="button" aria-label="Verwijder cijfer 2">×</button>
           </div>
         </div>
@@ -231,13 +231,13 @@ footer a{color:#a9d8c6}
       <div id="needed-panel" role="tabpanel" aria-labelledby="tab-needed" class="hidden">
         <p class="sub">Bereken welk cijfer je nodig hebt om je gewenste gemiddelde te halen.</p>
         <label class="field-label" for="current-grade">Huidig gemiddelde (1–10)</label>
-        <input id="current-grade" type="text" inputmode="decimal" autocomplete="off" value="6.5" inputmode="decimal">
+        <input id="current-grade" type="text" inputmode="decimal" autocomplete="off" value="6.5">
         <label class="field-label" for="current-weight">Hoe vaak telt je huidige gemiddelde mee?</label>
-        <input id="current-weight" type="text" inputmode="decimal" autocomplete="off" value="2" inputmode="decimal">
+        <input id="current-weight" type="text" inputmode="decimal" autocomplete="off" value="2">
         <label class="field-label" for="target-grade">Gewenst eindgemiddelde (1–10)</label>
-        <input id="target-grade" type="text" inputmode="decimal" autocomplete="off" value="7" inputmode="decimal">
+        <input id="target-grade" type="text" inputmode="decimal" autocomplete="off" value="7">
         <label class="field-label" for="next-weight">Weging van de volgende toets</label>
-        <input id="next-weight" type="text" inputmode="decimal" autocomplete="off" value="1" inputmode="decimal">
+        <input id="next-weight" type="text" inputmode="decimal" autocomplete="off" value="1">
         <div class="actions"><button class="btn" id="calc-needed" type="button">Bereken benodigd cijfer</button><button class="btn btn-secondary" id="reset-needed" type="button">Reset</button></div>
         <div class="result" aria-live="polite" aria-atomic="true">
           <div class="result-label">Cijfer dat je nodig hebt</div>
@@ -305,7 +305,7 @@ footer a{color:#a9d8c6}
 (() => {
   const $ = (id) => document.getElementById(id);
   const fmt = (n) => n.toLocaleString('nl-NL', {minimumFractionDigits:2, maximumFractionDigits:2});
-  const parseDecimal = (field) => { const value = field.value.trim().replace(/\\s/g, '').replace(',', '.'); return value === '' ? NaN : Number(value); };
+  const parseDecimal = (field) => { const value = field.value.trim().replace(/\s/g, '').replace(',', '.'); return value === '' ? NaN : Number(value); };
   $('year').textContent = new Date().getFullYear();
 
   const averageTab = $('tab-average');
@@ -356,7 +356,7 @@ footer a{color:#a9d8c6}
     if (count >= 20) { $('average-error').textContent = 'Je kunt maximaal 20 cijfers toevoegen.'; return; }
     const row = document.createElement('div');
     row.className = 'grade-row';
-    row.innerHTML = '<div><label>Cijfer</label><input class="grade-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Bijv. 7,5" inputmode="decimal"></div><div><label>Weging</label><input class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1" inputmode="decimal"></div><button class="remove" type="button" aria-label="Verwijder cijfer">×</button>';
+    row.innerHTML = '<div><label>Cijfer</label><input class="grade-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Bijv. 7,5"></div><div><label>Weging</label><input class="weight-input" type="text" inputmode="decimal" autocomplete="off" value="1"></div><button class="remove" type="button" aria-label="Verwijder cijfer">×</button>';
     $('grade-rows').appendChild(row);
     updateRows();
     row.querySelector('.grade-input').focus();
