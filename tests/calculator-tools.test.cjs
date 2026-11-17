@@ -64,6 +64,7 @@ function createCalculator(tool, values = {}, gradeRows = []) {
     element: make,
     sub,
     calculate() { make('calculate').listeners.click(); },
+    input() { form.listeners.input?.(); },
     changeMode() { make(tool === 'discount' ? 'discount-mode' : 'percentage-mode').listeners.change?.(); },
   };
 }
@@ -259,4 +260,87 @@ test('VAT rejects a missing percentage instead of treating it as zero', () => {
   const app = createCalculator('vat', { amount: '100', rate: '', mode: 'exclusive' });
   app.calculate();
   assert.match(app.element('error').textContent, /geldig BTW-percentage/i);
+});
+
+
+test('editing an input clears the stale result so it cannot be mistaken for the new values', () => {
+  const app = createCalculator('percentage', { 'percentage-mode': 'of', amount: '200', rate: '15' });
+  app.calculate();
+  assert.equal(app.element('result-main').textContent, '30');
+  app.input();
+  assert.equal(app.element('result-label').textContent, 'Voorbeeldresultaat');
+  assert.equal(app.element('result-main').textContent, 'Vul je gegevens in');
+  assert.equal(app.element('result-detail').textContent, '');
+});
+
+test('invalid input clears both the previous result and its old label', () => {
+  const app = createCalculator('discount', { 'discount-mode': 'normal', amount: '100', rate: '20' });
+  app.calculate();
+  app.element('amount').value = '';
+  app.calculate();
+  assert.equal(app.element('result-label').textContent, 'Voorbeeldresultaat');
+  assert.equal(app.element('result-main').textContent, 'Vul je gegevens in');
+});
+
+const siteRoot = path.join(__dirname, '..');
+const calculatorPages = [
+  'index.html', 'cijfer-berekenen.html', 'percentage-berekenen.html',
+  'korting-berekenen.html', 'btw-berekenen.html', 'gewogen-gemiddelde.html',
+  'benodigd-cijfer.html', 'uurloon-berekenen.html', 'netto-bruto-indicatie.html',
+  'tijd-berekenen.html', 'bmi-berekenen.html',
+];
+
+test('all site pages have unique HTML ids and all local file links resolve', () => {
+  for (const file of calculatorPages) {
+    const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
+    const ids = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+    assert.equal(new Set(ids).size, ids.length, file + ' contains duplicate IDs');
+    const links = [...html.matchAll(/(?:href|src)=["']([^"']+)["']/g)].map(match => match[1]);
+    for (const href of links) {
+      if (!href.startsWith('./')) continue;
+      const target = href.slice(2).split(/[?#]/)[0];
+      if (!target) continue;
+      assert.equal(fs.existsSync(path.join(siteRoot, target)), true, file + ' has a broken local link: ' + href);
+    }
+  }
+});
+
+test('grade calculator contains every element referenced by its inline script', () => {
+  const html = fs.readFileSync(path.join(siteRoot, 'cijfer-berekenen.html'), 'utf8');
+  const ids = new Set([...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]));
+  const references = [...html.matchAll(/\\$\\('([^']+)'\\)/g)].map(match => match[1]);
+  for (const id of references) assert.equal(ids.has(id), true, 'grade calculator references missing #' + id);
+});
+
+test('grade calculator has visible input text, soft input surfaces and a three-column grade row', () => {
+  const html = fs.readFileSync(path.join(siteRoot, 'cijfer-berekenen.html'), 'utf8');
+  assert.match(html, /#average-panel input,#needed-panel input,.grade-row input[\\s\\S]*?color:#1d302c!important/);
+  assert.match(html, /background:#f8fbf9!important/);
+  assert.match(html, /grid-template-columns:minmax\\(0,1fr\\) 105px 40px/);
+  assert.match(html, /id="copy-average"/);
+  assert.match(html, /id="copy-needed"/);
+  assert.match(html, /id="average-status"/);
+  assert.match(html, /id="needed-status"/);
+});
+
+test('all standalone calculator pages load the shared calculator stylesheet and script', () => {
+  for (const file of calculatorPages.filter(file => file !== 'index.html' && file !== 'cijfer-berekenen.html')) {
+    const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
+    assert.match(html, /href="\\.\\/calculator-tools\\.css"/, file + ' is missing shared CSS');
+    assert.match(html, /src="\\.\\/calculator-tools\\.js"/, file + ' is missing calculator JS');
+  }
+});
+
+test('discount page does not repeat the same related calculator link', () => {
+  const html = fs.readFileSync(path.join(siteRoot, 'korting-berekenen.html'), 'utf8');
+  const nav = html.match(/<nav class="related-links"[\\s\\S]*?<\\/nav>/)?.[0] || '';
+  const links = [...nav.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(new Set(links).size, links.length);
+});
+
+test('reset controls use buttons instead of triggering a second native form reset', () => {
+  for (const file of calculatorPages.filter(file => file !== 'index.html' && file !== 'cijfer-berekenen.html')) {
+    const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
+    assert.doesNotMatch(html, /id="reset" type="reset"/, file + ' still has a double-reset control');
+  }
 });
