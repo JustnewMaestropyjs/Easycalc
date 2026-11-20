@@ -6639,11 +6639,24 @@ const contactModalTranslations = {
   ru: { title: 'Контакты', html: '<p>Для вопросов, отзывов, сообщений об ошибках и предложений используйте раздел Issues проекта EasyCalc на GitHub.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Открыть раздел Issues EasyCalc</a></p><h3>Перед отправкой сообщения</h3><p>Укажите название калькулятора, введённые данные, ожидаемый результат и фактическое поведение. Не публикуйте пароли, платёжные данные и другую конфиденциальную информацию.</p>' }
 };
 
+const privacyModalTranslations = {
+  nl: { title: 'Privacy', html: '<p>EasyCalc heeft geen account nodig. Waarden die je in calculators invult, worden normaal gesproken in je browser verwerkt. Je taalkeuze, thema, favorieten en recent gebruikte calculators kunnen lokaal in je browser worden opgeslagen.</p><h3>Valutacalculator</h3><p>De valutacalculator vraagt wisselkoersgegevens op via de externe <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a>. De gekozen valuta worden meegestuurd om de koers op te vragen.</p><h3>Gevoelige gegevens</h3><p>Vul geen wachtwoorden, betaalgegevens of andere gevoelige persoonsgegevens in.</p>' },
+  en: { title: 'Privacy Policy', html: '<p>EasyCalc does not require an account. Values entered into calculators are normally processed in your browser. Your language, theme, favorites and recently used calculators may be stored locally in your browser.</p><h3>Currency calculator</h3><p>The currency calculator requests exchange-rate data from the external <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a>. The selected currency pair is included in that request.</p><h3>Sensitive information</h3><p>Do not enter passwords, payment details or other sensitive personal information.</p>' },
+  tr: { title: 'Gizlilik', html: '<p>EasyCalc hesap gerektirmez. Hesap makinelerine girdiğin değerler normalde tarayıcında işlenir. Dil, tema, favoriler ve son kullanılan hesap makineleri tarayıcında yerel olarak saklanabilir.</p><h3>Döviz hesaplayıcı</h3><p>Döviz hesaplayıcı, kur bilgilerini harici <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a> hizmetinden alır. Seçilen para birimi çifti bu isteğe eklenir.</p><h3>Hassas bilgiler</h3><p>Parola, ödeme bilgisi veya diğer hassas kişisel bilgileri girme.</p>' },
+  de: { title: 'Datenschutz', html: '<p>EasyCalc benötigt kein Benutzerkonto. Eingegebene Werte werden normalerweise in deinem Browser verarbeitet. Sprache, Design, Favoriten und zuletzt verwendete Rechner können lokal im Browser gespeichert werden.</p><h3>Währungsrechner</h3><p>Der Währungsrechner ruft Wechselkursdaten über die externe <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a> ab. Das ausgewählte Währungspaar wird dabei übermittelt.</p><h3>Sensible Daten</h3><p>Gib keine Passwörter, Zahlungsdaten oder andere vertrauliche personenbezogene Informationen ein.</p>' },
+  es: { title: 'Privacidad', html: '<p>EasyCalc no requiere una cuenta. Los valores introducidos en las calculadoras normalmente se procesan en tu navegador. El idioma, el tema, los favoritos y las calculadoras recientes pueden guardarse localmente en tu navegador.</p><h3>Conversor de divisas</h3><p>El conversor obtiene los tipos de cambio mediante la <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">API externa Frankfurter</a>. La solicitud incluye el par de divisas seleccionado.</p><h3>Información sensible</h3><p>No introduzcas contraseñas, datos de pago ni otra información personal sensible.</p>' },
+  ru: { title: 'Конфиденциальность', html: '<p>EasyCalc не требует регистрации. Введённые значения обычно обрабатываются в браузере. Язык, тема, избранное и недавно использованные калькуляторы могут сохраняться локально в браузере.</p><h3>Конвертер валют</h3><p>Конвертер получает курсы через внешний сервис <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter API</a>. В запрос передаётся выбранная пара валют.</p><h3>Конфиденциальные данные</h3><p>Не вводите пароли, платёжные данные и другую конфиденциальную личную информацию.</p>' }
+};
+
 function openSiteModal(type) {
   const data=siteModalData[type];
   if(!data) return;
   const language=document.getElementById('language')?.value || 'nl';
-  const modalData=type === 'contact' ? (contactModalTranslations[language] || contactModalTranslations.en) : data;
+  const modalData = type === 'contact'
+    ? (contactModalTranslations[language] || contactModalTranslations.en)
+    : type === 'privacy'
+      ? (privacyModalTranslations[language] || privacyModalTranslations.en)
+      : data;
   document.getElementById('siteModalTitle').textContent=modalData.title;
   document.getElementById('siteModalContent').innerHTML=modalData.html;
   document.getElementById('siteModal').classList.add('open');
