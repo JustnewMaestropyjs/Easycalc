@@ -39,6 +39,8 @@ Official tax references for the 2026 estimate: https://www.belastingdienst.nl/wp
 - [x] Add a prominent responsive grid of ten dedicated Dutch calculator links near the top of the homepage.
 - [x] Automated tests cover weighted grades at 1 and 10, invalid grade >10, zero weight, required score below 1, exactly 10 and above 10.
 - [x] Automated tests cover inclusive/exclusive VAT, invalid stacked discounts, oversized breaks, and empty salary.
+- [x] Automated regression checks verify unique page titles, descriptions, canonical URLs, Dutch document language and one H1 per public page.
+- [x] Homepage contact and privacy text provide a public feedback route and identify the Frankfurter currency-rate API.
 - [ ] Manually verify maximum grade-row limits and keyboard behavior in a browser.
 - [x] Give all ten standalone calculator pages unique titles/descriptions/canonicals, one H1, and a link back to the homepage.
 - [x] Add related-calculator links between the ten pages to strengthen navigation and topical clusters.
