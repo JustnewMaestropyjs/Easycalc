@@ -6618,7 +6618,7 @@ const siteModalData = {
   },
   contact: {
     title: 'Contact',
-    html: '<p>For questions, feedback, bug reports or suggestions, use the contact method provided by the site owner when EasyCalc is published with its final contact address.</p><h3>Before contacting us</h3><p>Please include the calculator name, what you entered, what you expected and what happened. Do not send passwords, payment details or other sensitive information.</p>'
+    html: '<p>For questions, feedback, bug reports or suggestions, use the EasyCalc GitHub issue tracker.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Open the EasyCalc issue tracker</a></p><h3>Before contacting us</h3><p>Include the calculator name, what you entered, what you expected and what happened. Do not post passwords, payment details or other sensitive information in a public issue.</p>'
   },
   privacy: {
     title: 'Privacy Policy',
@@ -6630,11 +6630,22 @@ const siteModalData = {
   }
 };
 
+const contactModalTranslations = {
+  nl: { title: 'Contact', html: '<p>Voor vragen, feedback, bugmeldingen of suggesties kun je de EasyCalc GitHub-issue tracker gebruiken.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Open de EasyCalc-issue tracker</a></p><h3>Voordat je contact opneemt</h3><p>Vermeld de naam van de calculator, wat je hebt ingevuld, wat je verwachtte en wat er gebeurde. Plaats geen wachtwoorden, betaalgegevens of andere gevoelige informatie in een openbare melding.</p>' },
+  en: { title: 'Contact', html: '<p>For questions, feedback, bug reports or suggestions, use the EasyCalc GitHub issue tracker.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Open the EasyCalc issue tracker</a></p><h3>Before contacting us</h3><p>Include the calculator name, what you entered, what you expected and what happened. Do not post passwords, payment details or other sensitive information in a public issue.</p>' },
+  tr: { title: 'İletişim', html: '<p>Sorular, geri bildirimler, hata bildirimleri ve öneriler için EasyCalc GitHub bildirim sayfasını kullanabilirsin.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">EasyCalc bildirim sayfasını aç</a></p><h3>Bildirim göndermeden önce</h3><p>Hesap makinesinin adını, ne girdiğini, ne beklediğini ve ne olduğunu belirt. Herkese açık bildirimlerde parola, ödeme bilgisi veya başka hassas bilgiler paylaşma.</p>' },
+  de: { title: 'Kontakt', html: '<p>Für Fragen, Feedback, Fehlerberichte oder Vorschläge nutze bitte den GitHub-Issue-Tracker von EasyCalc.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">EasyCalc-Issue-Tracker öffnen</a></p><h3>Vor dem Kontakt</h3><p>Nenne den Rechner, deine Eingaben, das erwartete Ergebnis und was tatsächlich passiert ist. Teile keine Passwörter, Zahlungsdaten oder andere vertrauliche Informationen in öffentlichen Meldungen.</p>' },
+  es: { title: 'Contacto', html: '<p>Para preguntas, comentarios, informes de errores o sugerencias, utiliza el rastreador de incidencias de EasyCalc en GitHub.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Abrir el rastreador de incidencias</a></p><h3>Antes de contactar</h3><p>Incluye el nombre de la calculadora, los datos introducidos, el resultado esperado y lo que ocurrió. No publiques contraseñas, datos de pago ni otra información sensible.</p>' },
+  ru: { title: 'Контакты', html: '<p>Для вопросов, отзывов, сообщений об ошибках и предложений используйте раздел Issues проекта EasyCalc на GitHub.</p><p><a href="https://github.com/JustnewMaestropyjs/Easycalc/issues" target="_blank" rel="noopener noreferrer">Открыть раздел Issues EasyCalc</a></p><h3>Перед отправкой сообщения</h3><p>Укажите название калькулятора, введённые данные, ожидаемый результат и фактическое поведение. Не публикуйте пароли, платёжные данные и другую конфиденциальную информацию.</p>' }
+};
+
 function openSiteModal(type) {
   const data=siteModalData[type];
   if(!data) return;
-  document.getElementById('siteModalTitle').textContent=data.title;
-  document.getElementById('siteModalContent').innerHTML=data.html;
+  const language=document.getElementById('language')?.value || 'nl';
+  const modalData=type === 'contact' ? (contactModalTranslations[language] || contactModalTranslations.en) : data;
+  document.getElementById('siteModalTitle').textContent=modalData.title;
+  document.getElementById('siteModalContent').innerHTML=modalData.html;
   document.getElementById('siteModal').classList.add('open');
   document.body.style.overflow='hidden';
 }
