@@ -379,3 +379,23 @@ test('grade calculator accepts decimal-comma text fields rather than browser-san
   assert.ok(html.includes("replace(',', '.')"));
   assert.match(html, /id="grade-1"[^>]*type="text"[^>]*inputmode="decimal"/);
 });
+
+
+test('all public pages have unique SEO titles, descriptions, canonical URLs and one Dutch H1', () => {
+  const seenTitles = new Set();
+  for (const file of calculatorPages) {
+    const html = fs.readFileSync(path.join(siteRoot, file), 'utf8');
+    const title = html.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i)?.[1]?.trim();
+    const description = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i)?.[1]?.trim();
+    const canonical = html.match(/<link\\s+rel=["']canonical["']\\s+href=["']([^"']*)["']/i)?.[1];
+    const h1Count = [...html.matchAll(/<h1\\b/gi)].length;
+    assert.ok(title, file + ' is missing a page title');
+    assert.ok(description && description.length >= 50, file + ' is missing a useful meta description');
+    assert.ok(canonical, file + ' is missing a canonical URL');
+    assert.equal(canonical, 'https://justnewmaestropyjs.github.io/Easycalc/' + (file === 'index.html' ? '' : file), file + ' has an unexpected canonical URL');
+    assert.equal(h1Count, 1, file + ' should have exactly one H1');
+    assert.match(html, /<html[^>]*lang=["']nl["']/i, file + ' should declare Dutch as its document language');
+    assert.equal(seenTitles.has(title), false, file + ' reuses another page title');
+    seenTitles.add(title);
+  }
+});
