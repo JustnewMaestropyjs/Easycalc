@@ -400,3 +400,13 @@ test('all public pages have unique SEO titles, descriptions, canonical URLs and 
     seenTitles.add(title);
   }
 });
+
+
+test('homepage has a real public contact route and transparent currency-data privacy text', () => {
+  const html = fs.readFileSync(path.join(siteRoot, 'index.html'), 'utf8');
+  assert.match(html, /contactModalTranslations/);
+  assert.match(html, /https:\/\/github\.com\/JustnewMaestropyjs\/Easycalc\/issues/);
+  assert.doesNotMatch(html, /when EasyCalc is published with its final contact address/i);
+  assert.match(html, /privacyModalTranslations/);
+  assert.match(html, /https:\/\/frankfurter\.dev\//);
+});
